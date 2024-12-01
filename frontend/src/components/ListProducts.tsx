@@ -24,8 +24,11 @@ export default function ListProducts() {
       });
   }, []);
 
-  const handleDelete = () => {
-    alert('Implementar [DELETE]');
+  const handleDelete = async (id: number) => {
+    if (confirm('Deseja realmente excluir esse produto?')) {
+      await axios.delete(`http://localhost:8000/api/produtos/${id}`);
+      setProducts((prev) => prev.filter((product) => product.id !== id));
+    }
   };
 
   return (
@@ -45,7 +48,7 @@ export default function ListProducts() {
             </div>
             <div className='flex flex-col gap-2'>
               <button onClick={() => navigate(`/editar/${product.id}`)}>Editar</button>
-              <button onClick={() => handleDelete()}>Excluir</button>
+              <button onClick={() => handleDelete(product.id)}>Excluir</button>
             </div>
           </li>
         ))}
