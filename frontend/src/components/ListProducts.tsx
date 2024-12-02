@@ -35,7 +35,7 @@ export default function ListProducts() {
     <>
       <div className='mb-4'>
         <h1>Lista de Produtos</h1>
-        <Link to="/cadastro">Cadastrar Novo Produto</Link>
+        <Link to="/novo">Cadastrar Novo Produto</Link>
       </div>
       <ul className='flex flex-col gap-2 h-[70vh] overflow-y-scroll p-2'>
         {products.map((product) => (
