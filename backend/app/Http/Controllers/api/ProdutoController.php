@@ -23,7 +23,7 @@ class ProdutoController extends Controller
     {
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
-            'categoria' => 'required|in:paes,doces,salgados',
+            'categoria' => 'required|in:Pães,Doces,Salgados',
             'descricao' => 'nullable|string',
             'preco' => 'required|numeric|min:0',
         ]);
@@ -63,7 +63,7 @@ class ProdutoController extends Controller
 
         $validatedData = $request->validate([
             'nome' => 'sometimes|required|string|max:255',
-            'categoria' => 'sometimes|required|in:paes,doces,salgados',
+            'categoria' => 'sometimes|required|in:Pães,Doces,Salgados',
             'descricao' => 'nullable|string',
             'preco' => 'sometimes|required|numeric|min:0',
         ]);
