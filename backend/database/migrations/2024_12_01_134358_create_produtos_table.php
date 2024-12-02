@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('produtos', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->enum ('categoria', ['paes', 'doces', 'salgados']);
+            $table->enum ('categoria', ['Pães', 'Doces', 'Salgados']);
             $table->text('descricao');
-            $table->decimal('preco', 8, 2);
+            $table->double('preco', 8, 2);
             $table->timestamps();
         });
     }
