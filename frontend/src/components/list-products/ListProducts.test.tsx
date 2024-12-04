@@ -1,9 +1,10 @@
+// TODO: atualizar testes unitários para ProductStock.tsx
 import '@testing-library/jest-dom';
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { setupServer } from "msw/node";
 import { handlers } from "../../mocks/handlers";
-import ListProducts from "./ListProducts";
+import ListProducts from "./ProductStock";
 
 it("Deve exibir a lista de produtos", async () => {
   render(

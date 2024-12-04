@@ -8,8 +8,17 @@
   @apply bg-vanilla;
   @apply text-black;
   @apply font-lato;
+
+  ::selection {
+    @apply bg-orange;
+    @apply text-white;
+  }
 }
 
 h1 {
   font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 1.8rem;
 }
