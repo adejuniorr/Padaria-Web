@@ -7,9 +7,13 @@ import axios from 'axios';
 
 const schema = z.object({
   nome: z.string().min(1, "O nome é obrigatório"),
-  categoria: z.enum(['Pães', 'Doces', 'Salgados'], { required_error: "A categoria é obrigatória", description: "Categoria inválida" }),
+  categoria: z.enum(['Pães', 'Doces', 'Salgados'], { errorMap: () => ({ message: 'Selecione uma categoria' }) }),
   descricao: z.string().optional(),
-  preco: z.number().positive("O preço deve ser positivo").min(0.01, "O preço deve ser maior que zero")
+  preco: z
+    .string()
+    .max(6, 'O preço deve ser abaixo de R$ 1000,00')
+    .regex(/^\d+(.\d{1,2})?$/, 'Valor inválido (ex. R$ 10,25)')
+    .transform((val) => parseFloat(val.replace(',', '.'))),
 });
 
 type ProductForm = z.infer<typeof schema>;
