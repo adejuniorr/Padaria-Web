@@ -1,9 +1,20 @@
+import { Outlet } from "react-router-dom"
+import { MobileMenu } from "./components/nav-menus/MobileMenu"
+
 function App() {
+  const viewport = window.innerWidth;
+
   return (
-    <main className='w-screen h-screen flex flex-col items-center justify-center'>
-      <h1>W.I.P</h1>
-      <p>Esta página está em desenvolvimento =)</p>
-    </main>
+    <>
+      {
+        viewport < 1024 ? (
+          <MobileMenu />
+        ) : (
+          <h1>Desktop
+          </h1>
+      )}
+      <Outlet />
+    </>
   )
 }
 
