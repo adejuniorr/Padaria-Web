@@ -1,21 +1,15 @@
 import { Outlet } from "react-router-dom"
-import { MobileMenu } from "./components/nav-menus/MobileMenu"
+import { AsideMenu } from "./components/aside-menu/AsideMenu";
 
 function App() {
-  const viewport = window.innerWidth;
-
   return (
-    <>
-      {
-        viewport < 1024 ? (
-          <MobileMenu />
-        ) : (
-          <h1>Desktop
-          </h1>
-      )}
-      <Outlet />
-    </>
-  )
+    <div className="flex">
+      <AsideMenu />
+      <main className="md:mx-auto md:w-[68vw] md:ml-auto md:mr-0 px-8">
+        <Outlet />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
