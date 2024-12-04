@@ -51,9 +51,9 @@ export default function ProductStock() {
 
   return (
     <main className='px-4 py-4 h-screen'>
-      <h1 className='font-pacifico text-orange text-center mb-6'>
+      <h2 className='font-pacifico text-orange text-center mb-6'>
         Estoque
-      </h1>
+      </h2>
       <SearchInput />
       <CategorySelector
         categories={categories}

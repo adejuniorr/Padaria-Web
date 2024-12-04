@@ -10,9 +10,9 @@ type CategorySelectorProps = {
 export const CategorySelector = ({ categories, selectedCategory, setSelectedCategory }: CategorySelectorProps) => {
   return (
     <div className='flex flex-col gap-3 items-center'>
-      <h2 className='font-pacifico text-orange self-start text-center w-full'>
+      <h3 className='font-pacifico text-orange self-start text-center w-full'>
         Categoria: {selectedCategory}
-      </h2>
+      </h3>
       <div className='flex items-center justify-evenly w-full'>
         {categories.map((category) => (
           <IconButton
