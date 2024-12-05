@@ -65,10 +65,21 @@ Siga os passos abaixo para configurar e rodar o projeto na sua máquina.
    ```
 
 2. **Configurar o backend:**  
-   Navegue até a pasta `./backend` e execute os comandos:  
+   Navegue até a pasta `./backend` e duplique o arquivo `.env.example` para configurar seu banco de dados com as seguintes variáveis:
+   ```
+   DB_CONNECTION= // SGBD utilizado (mysql, postgres, etc.)
+   DB_HOST= // Host do servidor onde o BD está rodando (geralmente é 127.0.0.1)
+   DB_PORT= // Porta configurada para o BD no servidor (3306 por padrão)
+   DB_DATABASE= // Nome do banco de dados
+   DB_USERNAME= // Nome de usuário
+   DB_PASSWORD= // Senha
+   ```
+
+   Por fim, com tudo configurado, execute os comandos:  
    ```bash
    composer install
    php artisan migrate
+   php artisan db:seed
    php artisan serve
    ```
 
