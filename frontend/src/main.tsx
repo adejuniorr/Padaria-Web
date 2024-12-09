@@ -6,6 +6,7 @@ import ProductStock from './components/product-stock/ProductStock'
 import EditProduct from './components/edit-product/EditProduct'
 import RegisterProduct from './components/register-product/RegisterProduct'
 import App from './App'
+import { RegisterProductProvider } from './contexts/register-product-ctx/RegisterProductProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,8 +15,12 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />}>
           <Route path="/" element={<ProductStock />} />
           <Route path="/produto/:id" element={<EditProduct />} />
-          <Route path="/novo" element={<RegisterProduct />} />
         </Route>
+        <Route path="/novo" element={
+          <RegisterProductProvider>
+            <RegisterProduct />
+          </RegisterProductProvider>
+        } />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

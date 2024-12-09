@@ -1,20 +1,18 @@
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '../buttons/Button';
 import { FaArrowLeft } from 'react-icons/fa';
-import { useState } from 'react';
 import { useProductForm } from '../../hooks/useProductForm';
 import { InputField } from '../inputs/InputField';
 import { ProductCard } from '../product-card/ProductCard';
-import { Product } from '../../types/types';
 import { TiThSmallOutline } from 'react-icons/ti';
 import { PiBreadFill } from 'react-icons/pi';
 import { RiCake3Line } from 'react-icons/ri';
 import { MdOutlineBakeryDining } from 'react-icons/md';
+import { useContext } from 'react';
+import { RegisterProductContext } from '../../contexts/register-product-ctx/RegisterProductContext';
 
 export default function RegisterProduct() {
   const { register, handleSubmit, formState: { errors } } = useProductForm();
-  const [price, setPrice] = useState<string>('0,00');
   const categories = [
     {
       name: 'Todos',
@@ -33,71 +31,15 @@ export default function RegisterProduct() {
       icon: <MdOutlineBakeryDining />,
     },
   ]
-  const [product, setProduct] = useState<Product>({
-    id: 1,
-    nome: 'Nome do Produto',
-    categoria: 'Categoria',
-    descricao: 'Descrição',
-    preco: 0.00,
-  });
-  const navigate = useNavigate();
-
-  const onSubmit = async (data: unknown) => {
-    await axios.post('http://localhost:8000/api/produtos', data);
-    navigate('/');
-  };
-
-  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
-
-    if (name === '') {
-      setProduct({ ...product, nome: 'Nome do Produto' });
-      return;
-    }
-
-    setProduct({ ...product, nome: name });
-  }
-
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const category = event.target.value;
-
-    if (category === 'Selecionar') {
-      setProduct({ ...product, categoria: 'Categoria' });
-      return;
-    }
-
-    setProduct({ ...product, categoria: category });
-  }
-
-  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value.replace(/\D/g, '');
-
-    if (!input) {
-      setPrice('0,00');
-      return;
-    }
-
-    const numericValue = Math.min(Number(input), 99999);
-
-    const formattedValue = (numericValue / 100).toLocaleString('pt-BR', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
-    setPrice(formattedValue);
-    setProduct({ ...product, preco: numericValue / 100 });
-  };
-
-  const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const description = event.target.value;
-
-    if (description === '') {
-      setProduct({ ...product, descricao: 'Descrição' });
-      return;
-    }
-
-    setProduct({ ...product, descricao: description });
-  }
+  const {
+    product,
+    price,
+    handleNameChange,
+    handleCategoryChange,
+    handlePriceChange,
+    handleDescriptionChange,
+    onSubmit,
+  } = useContext(RegisterProductContext);
 
   return (
     <div className='py-4 h-screen'>
