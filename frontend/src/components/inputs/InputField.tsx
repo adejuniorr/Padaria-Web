@@ -1,0 +1,21 @@
+import { ReactNode } from "react";
+import { FieldError } from "react-hook-form";
+
+type InputFieldProps = {
+  label: string,
+  input: ReactNode,
+  error?: FieldError,
+  vertical?: boolean,
+}
+
+export const InputField = ({ label, input, error, vertical }: InputFieldProps) => {
+  return (
+    <div >
+      <span className={`${vertical ? " flex-col" : "flex-row"} flex gap-2 rounded-md shadow-custom-01 bg-white px-4 py-3`}>
+        <label className='w-fit font-bold'>{label}:</label>
+        {input}
+      </span>
+      {error && <i>{error.message}</i>}
+    </div>
+  )
+}

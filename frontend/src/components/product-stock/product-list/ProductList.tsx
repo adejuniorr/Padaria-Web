@@ -1,6 +1,6 @@
 import { Category, Product } from "../../../types/types";
 import { useNavigate } from 'react-router-dom';
-import { ProductCard } from "../../cards/ProductCard";
+import { ProductCard } from "../../product-card/ProductCard";
 
 type ProductListProps = {
   products: Product[],
