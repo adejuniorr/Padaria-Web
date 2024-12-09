@@ -12,8 +12,8 @@ export const AsideMenu = () => {
   const toggleMenu = () => setOpen(!open);
 
   return (
-    <aside className="fixed md:block">
-      <div onClick={toggleMenu} className="absolute top-6  bg-orange text-white text-3xl w-fit p-2 rounded-e-md shadow-sm shadow-gray-500 md:hidden">
+    <aside className="fixed md:block z-20">
+      <div onClick={toggleMenu} className="absolute top-6 bg-orange text-white text-3xl w-fit p-2 rounded-e-md shadow-sm shadow-gray-500 md:hidden">
         <MdOutlineMenuOpen />
       </div>
       <div className={`absolute z-20 w-[90vw] shadow-xl shadow-gray-900 transition-all duration-500 ${open ? "" : "-translate-x-[100vw]"} md:fixed md:w-[32vw] md:translate-x-0 md:shadow-none flex flex-col gap-8 p-2 bg-orange h-screen`}>
