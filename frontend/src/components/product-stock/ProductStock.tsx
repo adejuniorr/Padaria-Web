@@ -51,7 +51,7 @@ export default function ProductStock() {
 
   return (// TODO: substituir tag main por div
     <main className='pb-4 h-screen'>
-      <h2 className='sticky top-0 z-10 font-pacifico bg-vanilla text-orange text-center mb-6 rounded-b-2xl shadow-custom-01'>
+      <h2 className='sticky top-0 z-10 font-pacifico bg-vanilla text-orange text-center mb-6 rounded-b-2xl shadow-custom-01 py-4'>
         Estoque
       </h2>
       <SearchInput />
