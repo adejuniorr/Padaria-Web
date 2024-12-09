@@ -9,7 +9,7 @@ type ProductCardProps = {
 
 export const ProductCard = ({ product, categories, changing }: ProductCardProps) => {
   return (
-    <div className='w-[400px] min-h-[200px] bg-orange rounded-md overflow-hidden shadow-custom-01 flex items-center justify-between'>
+    <div className='sm:w-[400px] min-h-[200px] bg-orange rounded-md overflow-hidden shadow-custom-01 flex items-center justify-between'>
       <div className='relative w-[40%] min-h-[200px]'>
         {changing && (
           <div className='absolute z-10 bg-gray-600 opacity-0 hover:opacity-75 cursor-pointer w-full h-full flex flex-col items-center justify-center'>
