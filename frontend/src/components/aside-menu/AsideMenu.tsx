@@ -12,8 +12,8 @@ export const AsideMenu = () => {
   const toggleMenu = () => setOpen(!open);
 
   return (
-    <aside className="fixed md:block">
-      <div onClick={toggleMenu} className="absolute top-6  bg-orange text-white text-3xl w-fit p-2 rounded-e-md shadow-sm shadow-gray-500 md:hidden">
+    <aside className="fixed md:block z-20">
+      <div onClick={toggleMenu} className="absolute top-6 bg-orange text-white text-3xl w-fit p-2 rounded-e-md shadow-sm shadow-gray-500 md:hidden">
         <MdOutlineMenuOpen />
       </div>
       <div className={`absolute z-20 w-[90vw] shadow-xl shadow-gray-900 transition-all duration-500 ${open ? "" : "-translate-x-[100vw]"} md:fixed md:w-[32vw] md:translate-x-0 md:shadow-none flex flex-col gap-8 p-2 bg-orange h-screen`}>
@@ -21,18 +21,18 @@ export const AsideMenu = () => {
         <nav className="py-8 px-4">
           <h1 className="text-white font-pacifico mb-10">Padaria Web</h1>
           <ul className="flex flex-col gap-4">
-            <li className={`${at === "/" ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full p-3`}>
-              <Link to="/" onClick={toggleMenu} className="flex items-center gap-4 font-bold">
+            <li className={`${at === "/" ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full`}>
+              <Link to="/" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3">
                 <PiHouseBold className="text-xl" /> Estoque
               </Link>
             </li>
-            <li className={`${at === "/novo" ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full p-3`}>
-              <Link to="/novo" onClick={toggleMenu} className="flex items-center gap-4 font-bold">
+            <li className={`${at === "/novo" ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full`}>
+              <Link to="/novo" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3">
                 <FaPlus className="text-lg" /> Cadastrar Novo Produto
               </Link>
             </li>
-            <li className={`${at === "/relatorio" ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full p-3`}>
-              <Link to="/relatorio" onClick={toggleMenu} className="flex items-center gap-4 font-bold">
+            <li className={`${at === "/relatorio" ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full`}>
+              <Link to="/relatorio" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3">
                 <FaArrowRight className="text-lg" /> Gerar Relatório de Vendas
               </Link>
             </li>
