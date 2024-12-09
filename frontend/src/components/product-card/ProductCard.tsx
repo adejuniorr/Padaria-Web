@@ -27,7 +27,7 @@ export const ProductCard = ({ product, categories, changing }: ProductCardProps)
       </div>
       <div className='w-[60%] min-h-[200px] bg-white p-2'>
         <p className='font-bold text-xl mb-2'>{product.nome}</p>
-        <p className='flex items-center gap-1 rounded-full bg-orange bg-opacity-70 w-fit px-2 mb-2'>
+        <p className='flex items-center gap-1 rounded-full bg-orange text-brown bg-opacity-70 w-fit px-2 mb-2'>
           {categories.find((category) => category.name === product.categoria)?.icon}
           {product.categoria}
         </p>

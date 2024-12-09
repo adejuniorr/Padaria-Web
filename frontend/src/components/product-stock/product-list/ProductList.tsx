@@ -11,7 +11,7 @@ export const ProductList = ({ products, categories }: ProductListProps) => {
   const navigate = useNavigate();
 
   return (
-    <ul className='flex flex-col gap-5 h-[62vh] overflow-y-scroll px-3 py-2 pb-4'>
+    <ul className='flex flex-wrap justify-center gap-5 h-[62vh] overflow-y-scroll px-3 py-2 pb-4'>
       {products.map((product) => (
         <li key={product.id} onClick={() => navigate(`/produto/${product.id}`)} className="cursor-pointer">
           <ProductCard
