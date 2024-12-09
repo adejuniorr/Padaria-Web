@@ -49,8 +49,8 @@ export default function ProductStock() {
     }
   }; */
 
-  return (
-    <main className='px-4 py-4 h-screen'>
+  return (// TODO: substituir tag main por div
+    <main className='py-4 h-screen'>
       <h2 className='font-pacifico text-orange text-center mb-6'>
         Estoque
       </h2>
