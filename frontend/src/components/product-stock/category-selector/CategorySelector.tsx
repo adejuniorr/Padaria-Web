@@ -13,7 +13,7 @@ export const CategorySelector = ({ categories, selectedCategory, setSelectedCate
       <h3 className='font-pacifico text-orange self-start text-center w-full'>
         Categoria: {selectedCategory}
       </h3>
-      <div className='flex items-center justify-evenly w-full'>
+      <div className='flex items-center gap-4 sm:gap-10 justify-center w-full'>
         {categories.map((category) => (
           <IconButton
             key={category.name}
