@@ -18,7 +18,6 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
   const onSubmit = async (data: unknown) => {
     await axios.post('http://localhost:8000/api/produtos', data);
     navigate('/');
-    
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,17 +29,6 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
     }
 
     setProduct({ ...product, nome: name });
-  }
-
-  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const category = event.target.value;
-
-    if (category === 'Selecionar') {
-      setProduct({ ...product, categoria: 'Categoria' });
-      return;
-    }
-
-    setProduct({ ...product, categoria: category });
   }
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,6 +50,17 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
     setProduct({ ...product, preco: numericValue / 100 });
   };
 
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const category = event.target.value;
+
+    if (category === 'Selecionar') {
+      setProduct({ ...product, categoria: 'Categoria' });
+      return;
+    }
+
+    setProduct({ ...product, categoria: category });
+  }
+
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const description = event.target.value;
 
@@ -76,10 +75,11 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
   return (
     <RegisterProductContext.Provider value={{
       product,
+      setProduct,
       price,
       handleNameChange,
-      handleCategoryChange,
       handlePriceChange,
+      handleCategoryChange,
       handleDescriptionChange,
       onSubmit,
     }}>

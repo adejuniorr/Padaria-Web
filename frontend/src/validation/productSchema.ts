@@ -9,6 +9,7 @@ export const productSchema = z.object({
     .min(1, 'O preço do produto deve ser informado')
     .max(6, 'O preço deve ser abaixo de R$ 1000,00')
     .transform((val) => parseFloat(val.replace(',', '.'))),
+  img: z.string().optional(),
 });
 
 export type ProductForm = z.infer<typeof productSchema>;

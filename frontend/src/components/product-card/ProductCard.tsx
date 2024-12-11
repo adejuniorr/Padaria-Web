@@ -1,24 +1,21 @@
-import { FaPlus } from "react-icons/fa"
 import { Category, Product } from "../../types/types"
+import ImageUploader from "./image-uploader/ImageUploader"
 
 type ProductCardProps = {
   product: Product,
   categories: Category[],
   changing?: boolean,
+  imageUpload?: (imgURL: string) => void
 }
 
-export const ProductCard = ({ product, categories, changing }: ProductCardProps) => {
+export const ProductCard = ({ product, categories, changing, imageUpload }: ProductCardProps) => {
   return (
-    <div className='sm:w-[400px] min-h-[200px] bg-orange rounded-md overflow-hidden shadow-custom-01 flex items-center justify-between'>
+    <div className='sm:w-[400px] min-h-[200px] bg-orange rounded-md overflow-hidden shadow-custom-01 flex items-center justify-between z-10'>
       <div className='relative w-[40%] min-h-[200px]'>
-        {changing && (
-          <div className='absolute z-10 bg-gray-600 opacity-0 hover:opacity-75 cursor-pointer w-full h-full flex flex-col items-center justify-center'>
-            <FaPlus className="text-5xl" />
-            <span className="break-words w-[50%] text-center">Adicionar Imagem</span>
-          </div>
-        )}
         <div className="flex items-center justify-center min-h-[200px]">
-          {product.img ? (
+          {changing ? (
+            <ImageUploader uploadImageInForm={imageUpload!} />
+          ) : product.img ? (
             <img src={product.img} alt={product.imgAlt} />
           ) : (
             <p className='text-4xl text-brown font-bold'>{product.nome[0]}</p>
