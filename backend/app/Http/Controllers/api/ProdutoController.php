@@ -12,24 +12,49 @@ class ProdutoController extends Controller
     public function index()
     {
         $produtos = Produto::all();
+
+        foreach ($produtos as $produto) {
+            if ($produto->imagem) {
+                $produto->imagem = asset('storage/' . $produto->imagem);
+            }
+        }
+
         return response()->json([
             'success' => true,
             'data' => $produtos,
         ]);
     }
 
+
     // Criar novo produto
     public function store(Request $request)
-    {
+    {        
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
             'categoria' => 'required|in:Pães,Doces,Salgados',
             'descricao' => 'nullable|string',
             'preco' => 'required|numeric|min:0',
+            'imagem' => 'nullable|file|mimes:jpeg,jpg,png,avif|max:2048'
         ]);
-
+        
         $produto = Produto::create($validatedData);
-        return response()->json($produto, 201);
+
+        if ($request->hasFile('imagem')) {
+            $path = $request->file('imagem')->store('produtos', 'public');
+            $produto->imagem = $path;
+            $produto->save();
+        }
+
+        return response()->json([
+            'produto' => [
+                'id' => $produto->id,
+                'nome' => $produto->nome,
+                'categoria' => $produto->categoria,
+                'descricao' => $produto->descricao,
+                'preco' => $produto->preco,
+                'imagem' => $produto->imagem ? asset('storage/' . $produto->imagem) : null,
+            ],
+        ], 201);
     }
 
     // Exibir produto específico
@@ -66,6 +91,7 @@ class ProdutoController extends Controller
             'categoria' => 'sometimes|required|in:Pães,Doces,Salgados',
             'descricao' => 'nullable|string',
             'preco' => 'sometimes|required|numeric|min:0',
+            'imagem' => 'nullable|file|mimes:jpeg,png,jpg,svg|max:2048',
         ]);
         
         $produto->update($validatedData);
