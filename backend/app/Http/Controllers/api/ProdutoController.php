@@ -37,26 +37,43 @@ class ProdutoController extends Controller
             'imagem' => 'nullable|file|mimes:jpeg,jpg,png,avif|max:2048'
         ]);
         
-        $produto = Produto::create($validatedData);
+        try {
 
-        if ($request->hasFile('imagem')) {
-            $path = $request->file('imagem')->store('produtos', 'public');
-            $produto->imagem = $path;
-            $produto->save();
+            $produto = Produto::create($validatedData);
+            
+            if ($request->hasFile('imagem')) {
+                $path = $request->file('imagem')->store('produtos', 'public');
+                $produto->imagem = $path;
+                $produto->save();
+            }
+            
+            return response()->json([
+                'success' => true,
+                'produto' => [
+                    'id' => $produto->id,
+                    'nome' => $produto->nome,
+                    'categoria' => $produto->categoria,
+                    'descricao' => $produto->descricao,
+                    'preco' => $produto->preco,
+                    'imagem' => $produto->imagem ? asset('storage/' . $produto->imagem) : null,
+                ],
+            ], 201);
+            
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == '23000') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Já existe um produto com esse nome',
+                ], 409);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao criar produto',
+            ], 500);
         }
-
-        return response()->json([
-            'produto' => [
-                'id' => $produto->id,
-                'nome' => $produto->nome,
-                'categoria' => $produto->categoria,
-                'descricao' => $produto->descricao,
-                'preco' => $produto->preco,
-                'imagem' => $produto->imagem ? asset('storage/' . $produto->imagem) : null,
-            ],
-        ], 201);
     }
-
+        
     // Exibir produto específico
     public function show($id)
     {
