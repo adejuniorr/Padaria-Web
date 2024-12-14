@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa"
 
 type ImageUploaderProps = {
-  onImageChange: (file: File | null) => void; // Callback para passar a imagem para o formulário pai
+  onImageChange: (file: File | null) => void;
 }
 
 const ImageUploader = ({ onImageChange }: ImageUploaderProps) => {
@@ -13,51 +13,47 @@ const ImageUploader = ({ onImageChange }: ImageUploaderProps) => {
     if (uploadedFile) {
       const cachedURL = URL.createObjectURL(uploadedFile);
       setImgURL(cachedURL);
-      onImageChange(uploadedFile); // Passa o arquivo para o pai
+      onImageChange(uploadedFile);
     }
   };
 
   const handleImageDelete = () => {
     setImgURL("");
-    onImageChange(null); // Remove o arquivo
+    onImageChange(null);
   };
 
   return (
     <div>
       {imgURL && (
-        <img
-          src={imgURL}
-          alt="Imagem do produto"
-          className="block object-cover min-h-[212px] z-10"
-        />
-      )}
-      <div className="flex gap-4">
-        {imgURL && (
-          <>
-            <label htmlFor="image-input" className="bg-orange px-3 text-white text-lg rounded-t-md">
+        <>
+          <img
+            src={imgURL}
+            alt="Imagem do produto"
+            className="object-cover min-h-[210px] z-10"
+          />
+          <div className="absolute z-20 bottom-0 flex justify-center w-full gap-4 sm:gap-6">
+            <label htmlFor="image-input" className="bg-orange px-3 py-1 text-white text-md sm:text-xl rounded-t-md cursor-pointer">
               <FaEdit />
             </label>
-            <button type="button" onClick={handleImageDelete} className="bg-orange px-3 text-white text-lg rounded-t-md">
+            <button type="button" onClick={handleImageDelete} className="bg-orange px-3 py-1 text-white text-md sm:text-xl rounded-t-md">
               <FaTrash />
             </button>
-          </>
-        )}
-      </div>
-      {!imgURL && (
-        <div className="absolute bg-gray-300 text-gray-600 cursor-pointer flex flex-col items-center justify-center w-full h-full">
-          <label htmlFor="image-input" className="flex flex-col items-center gap-2 border-2 border-dashed border-gray-700 rounded-md p-2">
-            <FaPlus className="text-4xl" />
-            <span>Adicionar Imagem</span>
-            <input
-              id="image-input"
-              type="file"
-              accept="image/*"
-              hidden
-              onChange={uploadImageDisplay}
-            />
-          </label>
-        </div>
+          </div>
+        </>
       )}
+      <div className={`${imgURL ? "hidden" : "block"} absolute top-0 left-0 bg-gray-300 text-gray-600 flex flex-col items-center justify-center w-full h-full p-4`}>
+        <label htmlFor="image-input" className="flex flex-col items-center text-center gap-2 border-2 border-dashed border-gray-700 rounded-md py-2 px-1 cursor-pointer">
+          <FaPlus className="text-4xl" />
+          <span>Adicionar Imagem</span>
+          <input
+            id="image-input"
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={uploadImageDisplay}
+          />
+        </label>
+      </div>
     </div>
   );
 };
