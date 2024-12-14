@@ -32,17 +32,32 @@ export default function RegisterProduct() {
     },
   ]
   const {
-    product,
-    price,
-    handleNameChange,
-    handleCategoryChange,
-    handlePriceChange,
-    handleDescriptionChange,
     onSubmit,
+    price,
+    productRequest,
+    setProductRequest,
+    productResponse,
+    handleNameChange,
+    handlePriceChange,
+    handleCategoryChange,
+    handleDescriptionChange,
   } = useContext(RegisterProductContext);
 
+  const onImageChange = (file: File | null) => {
+    if (file) {
+      setProductRequest({
+          ...productRequest,
+          imagem: file,
+        })
+      setValue("imagem", file);
+    } else {
+      setProductRequest({ ...productRequest, imagem: undefined });
+      setValue("imagem", null);
+    }
+  };
+
   return (
-    <div className='p-4 h-screen'>
+    <div className='p-4 h-screen flex flex-col items-center'>
       <h2 className='text-brown text-center mb-6 font-pacifico'>
         Cadastrar Produto
       </h2>
@@ -56,7 +71,7 @@ export default function RegisterProduct() {
           input={
             <input
               type="text"
-              placeholder='Digite o nome do produto*'
+              placeholder='Digite o nome do produto'
               {...register('nome')}
               onChangeCapture={handleNameChange}
               className='outline-none w-full'
@@ -69,7 +84,7 @@ export default function RegisterProduct() {
           input={
             <input
               type="text"
-              value={price === "0,00" ? "" : price}
+              value={price}
               placeholder='Digite o preço (apenas números)*'
               onChangeCapture={handlePriceChange}
               {...register('preco')}
@@ -86,7 +101,7 @@ export default function RegisterProduct() {
               onChangeCapture={handleCategoryChange}
               className='outline-none w-full cursor-pointer bg-white'
             >
-              <option value="Selecionar">Selecionar*</option>
+              <option value="Selecionar">Selecionar</option>
               <option value="Pães">Pães</option>
               <option value="Doces">Doces</option>
               <option value="Salgados">Salgados</option>
@@ -108,8 +123,14 @@ export default function RegisterProduct() {
           }
         />
         <div className='relative mt-2 w-full'>
-          <span className='lg:hidden font-pacifico text-xl bg-orange text-white rounded-t-lg px-4 py-1'>Prévia</span>
-          <ProductCard product={product} categories={categories} changing imageUpload={(imgURL: string) => setValue('img', imgURL)} />
+          <span className='lg:hidden font-pacifico text-xl bg-orange text-white rounded-t-lg px-4 py-1 relative -z-10 bottom-1'>Prévia</span>
+          <ProductCard
+            product={productResponse}
+            categories={categories}
+            changing
+            onImageChange={onImageChange}
+          />
+          <span>{errors.imagem && <i>{errors.imagem.message?.toString()}</i>}</span>
         </div>
         <Button type='submit'>
           Cadastrar

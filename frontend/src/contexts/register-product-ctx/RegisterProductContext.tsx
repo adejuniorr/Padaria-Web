@@ -1,28 +1,40 @@
 import { createContext } from 'react';
-import { Product } from '../../types/types';
+import { ProductRequest, ProductResponse } from '../../types/types';
+import { ProductForm } from '../../validation/productSchema';
 
 type RegisterProductContextProps = {
   price: string;
-  product: Product;
-  setProduct: (product: Product) => void;
+  productRequest: ProductRequest,
+  setProductRequest: (product: ProductRequest) => void,
+  productResponse: ProductResponse;
+  setProductResponse: (product: ProductResponse) => void;
   handleNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handlePriceChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCategoryChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   handleDescriptionChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onSubmit: (data: unknown) => void;
+  onSubmit: (data: ProductForm) => void;
 };
 
 export const RegisterProductContext = createContext<RegisterProductContextProps>({
   price: '0,00',
-  product: {
+  productRequest: {
+    id: 1,
+    nome: '',
+    preco: 0.00,
+    categoria: '',
+    descricao: '',
+    imagem: null,
+  },
+  setProductRequest: () => { },
+  productResponse: {
     id: 1,
     nome: 'Nome do Produto',
     preco: 0.00,
     categoria: 'Categoria',
     descricao: 'Descrição',
-    img: '',
+    imagem: undefined,
   },
-  setProduct: () => { },
+  setProductResponse: () => { },
   handleNameChange: () => { },
   handlePriceChange: () => { },
   handleCategoryChange: () => { },

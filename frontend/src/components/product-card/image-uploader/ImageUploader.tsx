@@ -1,83 +1,65 @@
-import { useState, useRef } from "react"
+import React, { useState } from "react"
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa"
 
 type ImageUploaderProps = {
-  uploadImageInForm: (imgURL: string) => void
+  onImageChange: (file: File | null) => void; // Callback para passar a imagem para o formulário pai
 }
 
-const ImageUploader = ({ uploadImageInForm }: ImageUploaderProps) => {
+const ImageUploader = ({ onImageChange }: ImageUploaderProps) => {
   const [imgURL, setImgURL] = useState<string>("");
-  const inputFileRef = useRef<HTMLInputElement>(null);
 
-  const handleImageUpload = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-
-    inputFileRef.current?.click();
-  }
-
-  const uploadImageDisplay = () => {
-    if (!inputFileRef.current?.files) return;
-
-    const uploadedFile = inputFileRef.current.files[0];
-    // const cashedURL = URL.createObjectURL(uploadedFile);
-
-    // setImgURL(cashedURL);
-    // uploadImageInForm(cashedURL);
-  
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      const base64ImgString = reader.result as string;
-      setImgURL(base64ImgString);
-      uploadImageInForm(base64ImgString);
+  const uploadImageDisplay = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadedFile = e.target.files?.[0];
+    if (uploadedFile) {
+      const cachedURL = URL.createObjectURL(uploadedFile);
+      setImgURL(cachedURL);
+      onImageChange(uploadedFile); // Passa o arquivo para o pai
     }
+  };
 
-    reader.readAsDataURL(uploadedFile);
-  }
+  const handleImageDelete = () => {
+    setImgURL("");
+    onImageChange(null); // Remove o arquivo
+  };
 
   return (
-    <>
-      <img
-        src={imgURL}
-        alt="Imagem do produto"
-        className={`${imgURL ? "block" : "hidden"} object-cover min-h-[200px] z-10`}
-      />
-      <div className="absolute z-20 bottom-0 flex gap-4">
-        <button
-          type="button"
-          onClick={handleImageUpload}
-          className={`${imgURL ? "block" : "hidden"} bg-orange px-4 text-white text-lg rounded-t-md w-fit p-1 shadow-custom-01`}
-        >
-          <FaEdit />
-        </button>
-        <button
-          type="button"
-          onClick={() => setImgURL("")}
-          className={`${imgURL ? "block" : "hidden"} bg-orange px-4 text-white text-lg rounded-t-md w-fit p-1 shadow-custom-01`}
-        >
-          <FaTrash />
-        </button>
-      </div>
-      <div className='absolute bg-gray-300 text-gray-600 cursor-pointer flex flex-col items-center justify-center w-full h-full'>
-        <button
-          type="button"
-          onClick={handleImageUpload}
-          className="flex flex-col items-center gap-2 border-2 border-dashed border-gray-700 rounded-md p-2"
-        >
-          <FaPlus className="text-4xl" />
-          <span className="break-words w-[80px] text-center">Adicionar Imagem (opcional)</span>
-        </button>
-        <input
-          type="file"
-          hidden
-          ref={inputFileRef}
-          onChange={uploadImageDisplay}
-          name="image-input"
-          id="image-input"
+    <div>
+      {imgURL && (
+        <img
+          src={imgURL}
+          alt="Imagem do produto"
+          className="block object-cover min-h-[212px] z-10"
         />
+      )}
+      <div className="flex gap-4">
+        {imgURL && (
+          <>
+            <label htmlFor="image-input" className="bg-orange px-3 text-white text-lg rounded-t-md">
+              <FaEdit />
+            </label>
+            <button type="button" onClick={handleImageDelete} className="bg-orange px-3 text-white text-lg rounded-t-md">
+              <FaTrash />
+            </button>
+          </>
+        )}
       </div>
-    </>
-  )
-}
+      {!imgURL && (
+        <div className="absolute bg-gray-300 text-gray-600 cursor-pointer flex flex-col items-center justify-center w-full h-full">
+          <label htmlFor="image-input" className="flex flex-col items-center gap-2 border-2 border-dashed border-gray-700 rounded-md p-2">
+            <FaPlus className="text-4xl" />
+            <span>Adicionar Imagem</span>
+            <input
+              id="image-input"
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={uploadImageDisplay}
+            />
+          </label>
+        </div>
+      )}
+    </div>
+  );
+};
 
-export default ImageUploader
+export default ImageUploader;

@@ -1,16 +1,16 @@
-import { Product } from '../../types/types';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
+import { ProductResponse } from '../../types/types';
 import { SearchInput } from '../inputs/SearchInput';
 import { CategorySelector } from './category-selector/CategorySelector';
 import { ProductList } from './product-list/ProductList';
-import { useState, useEffect } from 'react';
 import { TiThSmallOutline } from 'react-icons/ti';
 import { PiBreadFill } from 'react-icons/pi';
 import { RiCake3Line } from 'react-icons/ri';
 import { MdOutlineBakeryDining } from 'react-icons/md';
-import axios from 'axios';
 
 export default function ProductStock() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<ProductResponse[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
   const categories = [
     {

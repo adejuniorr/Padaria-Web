@@ -1,41 +1,81 @@
-import { ReactNode, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Product } from "../../types/types";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { ReactNode, useState } from "react";
+import { ProductRequest, ProductResponse } from "../../types/types";
 import { RegisterProductContext } from "./RegisterProductContext";
+import { ProductForm } from "../../validation/productSchema";
 
 export const RegisterProductProvider = ({ children }: { children: ReactNode }) => {
-  const [price, setPrice] = useState<string>('0,00');
-  const [product, setProduct] = useState<Product>({
+  const [price, setPrice] = useState<string>('R$ 0,00');
+  const [productRequest, setProductRequest] = useState<ProductRequest>({
+    id: 1,
+    nome: '',
+    categoria: '',
+    descricao: '',
+    preco: 0.00,
+    imagem: null,
+  });
+  const [productResponse, setProductResponse] = useState<ProductResponse>({
     id: 1,
     nome: 'Nome do Produto',
     categoria: 'Categoria',
     descricao: 'Descrição',
     preco: 0.00,
+    imagem: undefined,
   });
   const navigate = useNavigate();
 
-  const onSubmit = async (data: unknown) => {
-    await axios.post('http://localhost:8000/api/produtos', data);
-    navigate('/');
+  const onSubmit = async (data: ProductForm) => {
+
+    const formData = new FormData();
+    formData.append("nome", data.nome);
+    formData.append("categoria", data.categoria);
+    formData.append("descricao", data.descricao || "");
+    formData.append("preco", data.preco.toString());
+
+    if (data.imagem instanceof File) {
+      formData.append("imagem", data.imagem);
+    }
+
+    try {
+      await axios.post(
+        "http://localhost:8000/api/produtos", 
+        formData, 
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }
+        }
+      );
+
+      alert("Produto cadastrado com sucesso! Você será redirecionado para a página inicial.");
+      navigate('/');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 409) {
+        alert("Já existe um produto cadastrado com este nome");
+      } else {
+        alert("Ocorreu um erro ao cadastrar o produto.");
+        console.error("Erro ao enviar o produto:", error);
+      }
+    }
   };
 
   const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
 
     if (name === '') {
-      setProduct({ ...product, nome: 'Nome do Produto' });
+      setProductResponse({ ...productResponse, nome: 'Nome do Produto' });
       return;
     }
 
-    setProduct({ ...product, nome: name });
+    setProductResponse({ ...productResponse, nome: name });
   }
 
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value.replace(/\D/g, '');
 
     if (!input) {
-      setPrice('0,00');
+      setPrice('R$ 0,00');
       return;
     }
 
@@ -46,42 +86,44 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
       maximumFractionDigits: 2,
     });
 
-    setPrice(formattedValue);
-    setProduct({ ...product, preco: numericValue / 100 });
+    setPrice("R$ " + formattedValue);
+    setProductResponse({ ...productResponse, preco: numericValue / 100 });
   };
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const category = event.target.value;
 
     if (category === 'Selecionar') {
-      setProduct({ ...product, categoria: 'Categoria' });
+      setProductResponse({ ...productResponse, categoria: 'Categoria' });
       return;
     }
 
-    setProduct({ ...product, categoria: category });
+    setProductResponse({ ...productResponse, categoria: category });
   }
 
   const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const description = event.target.value;
 
     if (description === '') {
-      setProduct({ ...product, descricao: 'Descrição' });
+      setProductResponse({ ...productResponse, descricao: 'Descrição' });
       return;
     }
 
-    setProduct({ ...product, descricao: description });
+    setProductResponse({ ...productResponse, descricao: description });
   }
 
   return (
     <RegisterProductContext.Provider value={{
-      product,
-      setProduct,
+      onSubmit,
       price,
+      productRequest,
+      setProductRequest,
+      productResponse,
+      setProductResponse,
       handleNameChange,
       handlePriceChange,
       handleCategoryChange,
       handleDescriptionChange,
-      onSubmit,
     }}>
       {children}
     </RegisterProductContext.Provider>

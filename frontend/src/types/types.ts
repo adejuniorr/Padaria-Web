@@ -3,12 +3,20 @@ export type Category = {
   icon: React.ReactNode;
 }
 
-export type Product = {
+export type ProductRequest = {
   id: number;
   nome: string;
   preco: number;
   categoria: string;
   descricao: string;
-  img?: string;
-  imgAlt?: "Imagem meramente ilustrativa do produto";
+  imagem?: File | null;
 };
+
+export type ProductResponse = {
+  id: number;
+  nome: string;
+  preco: number;
+  categoria: string;
+  descricao: string;
+  imagem?: string | undefined;
+}
