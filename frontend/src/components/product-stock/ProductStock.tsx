@@ -1,46 +1,16 @@
-import { Product } from '../../types/types';
+import useProductStock from '../../hooks/useProductStock';
 import { SearchInput } from '../inputs/SearchInput';
 import { CategorySelector } from './category-selector/CategorySelector';
 import { ProductList } from './product-list/ProductList';
-import { useState, useEffect } from 'react';
-import { TiThSmallOutline } from 'react-icons/ti';
-import { PiBreadFill } from 'react-icons/pi';
-import { RiCake3Line } from 'react-icons/ri';
-import { MdOutlineBakeryDining } from 'react-icons/md';
-import axios from 'axios';
 
 export default function ProductStock() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
-  const categories = [
-    {
-      name: 'Todos',
-      icon: <TiThSmallOutline />,
-    },
-    {
-      name: 'Pães',
-      icon: <PiBreadFill />,
-    },
-    {
-      name: 'Doces',
-      icon: <RiCake3Line />,
-    },
-    {
-      name: 'Salgados',
-      icon: <MdOutlineBakeryDining />,
-    },
-  ]
-
-  useEffect(() => { // TODO: refactoring (SOLID principles)
-    axios.get('http://localhost:8000/api/produtos')
-      .then((res) => {
-        const response = res.data;
-
-        if (response.success) {
-          setProducts(response.data);
-        }
-      });
-  }, []);
+  const {
+    filteredProducts,
+    handleSearch,
+    categories,
+    selectedCategory,
+    setSelectedCategory,
+  } = useProductStock();
 
   /* const handleDelete = async (id: number) => { // TODO: refactoring (SOLID principles)
     if (confirm('Deseja realmente excluir esse produto?')) {
@@ -51,21 +21,21 @@ export default function ProductStock() {
 
   return (// TODO: substituir tag main por div
     <main className='pb-4 h-screen'>
-      <h2 className='sticky top-0 z-10 font-pacifico bg-vanilla text-orange text-center mb-6 rounded-b-2xl shadow-custom-01 py-4'>
+      <h2 className='font-pacifico text-orange text-center py-4'>
         Estoque
       </h2>
-      <SearchInput />
+      <SearchInput handleSearch={handleSearch} />
       <CategorySelector
         categories={categories}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
       <div className='flex flex-col items-center gap-2 mt-4'>
-        <small><i>Toque no produto para ver mais detalhes</i></small>
+        <p><i>Toque no produto para ver mais detalhes</i></p>
         <hr className='w-full border-2 border-orange mb-3' />
       </div>
       <ProductList
-        products={products}
+        products={filteredProducts}
         categories={categories}
       />
     </main>
