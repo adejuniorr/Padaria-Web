@@ -25,20 +25,18 @@ class ProdutoController extends Controller
         ]);
     }
 
-
     // Criar novo produto
     public function store(Request $request)
-    {        
+    {
         $validatedData = $request->validate([
             'nome' => 'required|string|max:255',
             'categoria' => 'required|in:Pães,Doces,Salgados',
             'descricao' => 'nullable|string',
             'preco' => 'required|numeric|min:0',
-            'imagem' => 'nullable|file|mimes:jpeg,jpg,png,avif|max:2048'
+            'imagem' => 'nullable|file|mimes:jpeg,jpg,png,svg,webp|max:2048'
         ]);
         
         try {
-
             $produto = Produto::create($validatedData);
             
             if ($request->hasFile('imagem')) {
@@ -87,13 +85,28 @@ class ProdutoController extends Controller
         
         return response()->json([
             'success' => true,
-            'data' => $produto,
-        ]);
+            'produto' => [
+                'id' => $produto->id,
+                'nome' => $produto->nome,
+                'categoria' => $produto->categoria,
+                'descricao' => $produto->descricao,
+                'preco' => $produto->preco,
+                'imagem' => $produto->imagem ? asset('storage/' . $produto->imagem) : null,
+            ],
+        ], 201);
     }
 
     // Atualizar produto
     public function update(Request $request, $id)
-    {
+    {        
+        $validatedData = $request->validate([
+            'nome' => 'sometimes|required|string|max:255',
+            'categoria' => 'sometimes|required|in:Pães,Doces,Salgados',
+            'descricao' => 'nullable|string',
+            'preco' => 'sometimes|required|numeric|min:0',
+            'imagem' => 'nullable|file|mimes:jpeg,jpg,png,svg,webp|max:2048',
+        ]);
+        
         $produto = Produto::find($id);
         
         if (!$produto) {
@@ -103,19 +116,36 @@ class ProdutoController extends Controller
             ], 404);
         }
 
-        $validatedData = $request->validate([
-            'nome' => 'sometimes|required|string|max:255',
-            'categoria' => 'sometimes|required|in:Pães,Doces,Salgados',
-            'descricao' => 'nullable|string',
-            'preco' => 'sometimes|required|numeric|min:0',
-            'imagem' => 'nullable|file|mimes:jpeg,png,jpg,svg|max:2048',
-        ]);
+        try {
+            $produto->update($validatedData);
         
-        $produto->update($validatedData);
-        return response()->json([
-            'success' => true,
-            'data' => $produto,
-        ]);
+        if ($request->hasFile('imagem')) {
+                if ($produto->imagem && \Storage::exists('public/' . $produto->imagem)) {
+                    \Storage::delete('public/' . $produto->imagem);
+                }
+                
+                $path = $request->file('imagem')->store('produtos', 'public');
+                $produto->imagem = $path;
+                $produto->save();
+            }
+            
+            return response()->json([
+                'success' => true,
+                'data' => $produto,
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->getCode() == '23000') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Já existe um produto com esse nome',
+                ], 409);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Erro ao atualizar produto',
+            ], 500);
+        }
     }
 
     // Deletar produto
