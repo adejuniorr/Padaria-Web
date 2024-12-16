@@ -1,10 +1,15 @@
+import { Outlet } from "react-router-dom"
+import { AsideMenu } from "./components/aside-menu/AsideMenu";
+
 function App() {
   return (
-    <main className='w-screen h-screen flex flex-col items-center justify-center'>
-      <h1>W.I.P</h1>
-      <p>Esta página está em desenvolvimento =)</p>
-    </main>
-  )
+    <div className="flex">
+      <AsideMenu />
+      <main className="lg:mx-auto lg:w-[67vw] lg:ml-auto lg:mr-0 w-full">
+        <Outlet />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
