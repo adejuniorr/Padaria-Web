@@ -12,16 +12,9 @@ export default function ProductStock() {
     setSelectedCategory,
   } = useProductStock();
 
-  /* const handleDelete = async (id: number) => { // TODO: refactoring (SOLID principles)
-    if (confirm('Deseja realmente excluir esse produto?')) {
-      await axios.delete(`http://localhost:8000/api/produtos/${id}`);
-      setProducts((prev) => prev.filter((product) => product.id !== id));
-    }
-  }; */
-
   return (// TODO: substituir tag main por div
     <main className='pb-4 h-screen'>
-      <h2 className='font-pacifico text-orange text-center py-4'>
+      <h2 className='font-pacifico text-orange text-center py-4 h-[13%]'>
         Estoque
       </h2>
       <SearchInput handleSearch={handleSearch} />
@@ -32,7 +25,7 @@ export default function ProductStock() {
       />
       <div className='flex flex-col items-center gap-2 mt-4'>
         <p><i>Toque no produto para ver mais detalhes</i></p>
-        <hr className='w-full border-2 border-orange mb-3' />
+        <hr className='w-[95%] border-2 border-orange mb-3' />
       </div>
       <ProductList
         products={filteredProducts}
