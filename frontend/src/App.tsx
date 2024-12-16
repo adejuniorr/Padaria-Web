@@ -5,7 +5,7 @@ function App() {
   return (
     <div className="flex">
       <AsideMenu />
-      <main className="md:mx-auto md:w-[68vw] md:ml-auto md:mr-0 px-2 w-full">
+      <main className="lg:mx-auto lg:w-[67vw] lg:ml-auto lg:mr-0 w-full">
         <Outlet />
       </main>
     </div>

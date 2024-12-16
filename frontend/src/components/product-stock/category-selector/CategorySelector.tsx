@@ -9,7 +9,7 @@ type CategorySelectorProps = {
 
 export const CategorySelector = ({ categories, selectedCategory, setSelectedCategory }: CategorySelectorProps) => {
   return (
-    <div className='flex flex-col gap-3 items-center'>
+    <div className='flex flex-col gap-3 items-center h-[15%]'>
       <h3 className='font-pacifico text-orange self-start text-center w-full'>
         Categoria: {selectedCategory}
       </h3>
