@@ -1,12 +1,13 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ReactNode, useState } from "react";
 import { ProductRequest, ProductResponse } from "../../types/types";
-import { RegisterProductContext } from "./RegisterProductContext";
+import { CreateProductContext } from "./CreateProductContext";
 import { ProductForm } from "../../validation/productSchema";
 
-export const RegisterProductProvider = ({ children }: { children: ReactNode }) => {
+export const CreateProductProvider = ({ children }: { children: ReactNode }) => {
   const [price, setPrice] = useState<string>('R$ 0,00');
+  const [pageLoading, setPageLoading] = useState<boolean>(false);
   const [productRequest, setProductRequest] = useState<ProductRequest>({
     id: 1,
     nome: '',
@@ -19,13 +20,15 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
     id: 1,
     nome: 'Nome do Produto',
     categoria: 'Categoria',
-    descricao: 'Descrição',
+    descricao: 'Sem descrição',
     preco: 0.00,
     imagem: undefined,
   });
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
 
-  const onSubmit = async (data: ProductForm) => {
+  const onSubmitRegister = async (data: ProductForm) => {
+    setPageLoading(true);
 
     const formData = new FormData();
     formData.append("nome", data.nome);
@@ -39,8 +42,8 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
 
     try {
       await axios.post(
-        "http://localhost:8000/api/produtos", 
-        formData, 
+        "http://localhost:8000/api/produtos",
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -48,9 +51,44 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
         }
       );
 
-      alert("Produto cadastrado com sucesso! Você será redirecionado para a página inicial.");
+      setTimeout(() => {
+        setPageLoading(false);
+        alert("Produto cadastrado com sucesso! \nVocê será redirecionado para a página inicial =)");
+        navigate('/');
+      }, 2000)
+    } catch (error) {
+      setPageLoading(false);
+      if (axios.isAxiosError(error) && error.response?.status === 409) {
+        alert("Já existe um produto cadastrado com este nome");
+      } else {
+        alert("Ocorreu um erro ao cadastrar o produto.");
+        console.error("Erro ao enviar o produto:", error);
+      }
+    }
+  };
+
+  const onSubmitUpdate = async (data: ProductForm) => {
+    setPageLoading(true);
+
+    const formData = new FormData();
+    formData.append('nome', data.nome);
+    formData.append('categoria', data.categoria);
+    formData.append('descricao', data.descricao || '');
+    formData.append('preco', data.preco.toString());
+    formData.append('_method', 'PUT')
+
+    if (data.imagem instanceof File) {
+      formData.append('imagem', data.imagem);
+    }
+
+    try {
+      await axios.post(`http://localhost:8000/api/produtos/${id}`, formData);
+
+      setPageLoading(false);
+      alert('Produto atualizado com sucesso! \nVocê será redirecionado para a página inicial =)');
       navigate('/');
     } catch (error) {
+      setPageLoading(false);
       if (axios.isAxiosError(error) && error.response?.status === 409) {
         alert("Já existe um produto cadastrado com este nome");
       } else {
@@ -112,10 +150,23 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
     setProductResponse({ ...productResponse, descricao: description });
   }
 
+  const handleDeleteProduct = async () => {
+    if (confirm('Deseja realmente excluir esse produto?')) {
+      setPageLoading(true);
+      await axios.delete(`http://localhost:8000/api/produtos/${id}`);
+      setPageLoading(false);
+      navigate('/');
+    }
+  };
+
   return (
-    <RegisterProductContext.Provider value={{
-      onSubmit,
+    <CreateProductContext.Provider value={{
+      pageLoading,
+      setPageLoading,
+      onSubmitRegister,
+      onSubmitUpdate,
       price,
+      setPrice,
       productRequest,
       setProductRequest,
       productResponse,
@@ -124,8 +175,9 @@ export const RegisterProductProvider = ({ children }: { children: ReactNode }) =
       handlePriceChange,
       handleCategoryChange,
       handleDescriptionChange,
+      handleDeleteProduct,
     }}>
       {children}
-    </RegisterProductContext.Provider>
+    </CreateProductContext.Provider>
   );
 }

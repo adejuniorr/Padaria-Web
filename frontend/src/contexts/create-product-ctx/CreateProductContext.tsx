@@ -2,8 +2,11 @@ import { createContext } from 'react';
 import { ProductRequest, ProductResponse } from '../../types/types';
 import { ProductForm } from '../../validation/productSchema';
 
-type RegisterProductContextProps = {
+type CreateProductContextProps = {
+  pageLoading: boolean;
+  setPageLoading: (loading: boolean) => void;
   price: string;
+  setPrice: (price: string) => void;
   productRequest: ProductRequest,
   setProductRequest: (product: ProductRequest) => void,
   productResponse: ProductResponse;
@@ -12,11 +15,16 @@ type RegisterProductContextProps = {
   handlePriceChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCategoryChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   handleDescriptionChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onSubmit: (data: ProductForm) => void;
+  onSubmitRegister: (data: ProductForm) => void;
+  onSubmitUpdate: (data: ProductForm) => void;
+  handleDeleteProduct: () => void;
 };
 
-export const RegisterProductContext = createContext<RegisterProductContextProps>({
+export const CreateProductContext = createContext<CreateProductContextProps>({
+  pageLoading: false,
+  setPageLoading: () => { },
   price: '0,00',
+  setPrice: () => { },
   productRequest: {
     id: 1,
     nome: '',
@@ -39,5 +47,7 @@ export const RegisterProductContext = createContext<RegisterProductContextProps>
   handlePriceChange: () => { },
   handleCategoryChange: () => { },
   handleDescriptionChange: () => { },
-  onSubmit: () => { },
+  onSubmitRegister: () => { },
+  onSubmitUpdate: () => { },
+  handleDeleteProduct: () => { },
 });
