@@ -154,7 +154,12 @@ class ProdutoController extends Controller
         $produto = Produto::find($id);
         
         if ($produto) {
+            if ($produto->imagem && \Storage::exists('public/' . $produto->imagem)) {
+                \Storage::delete('public/' . $produto->imagem);
+            }
+
             $produto->delete();
+            
             return response()->json([
                 'success' => true,
                 'message' => '[DELETE]: Produto deletado com sucesso',
