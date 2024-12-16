@@ -4,9 +4,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './global.css'
 import ProductStock from './components/product-stock/ProductStock'
 import EditProduct from './components/edit-product/EditProduct'
-import RegisterProduct from './components/register-product/RegisterProduct'
+import CreateProduct from './components/create-product/CreateProduct'
 import App from './App'
-import { RegisterProductProvider } from './contexts/register-product-ctx/RegisterProductProvider'
+import { CreateProductProvider } from './contexts/create-product-ctx/CreateProductProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,13 +14,23 @@ createRoot(document.getElementById('root')!).render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="/" element={<ProductStock />} />
-          <Route path="/produto/:id" element={<EditProduct />} />
+          <Route
+            path="/produto/:id"
+            element={
+              <CreateProductProvider>
+                <EditProduct />
+              </CreateProductProvider>
+            }
+          />
         </Route>
-        <Route path="/novo" element={
-          <RegisterProductProvider>
-            <RegisterProduct />
-          </RegisterProductProvider>
-        } />
+        <Route
+          path="/novo"
+          element={
+            <CreateProductProvider>
+              <CreateProduct />
+            </CreateProductProvider>
+          }
+        />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
