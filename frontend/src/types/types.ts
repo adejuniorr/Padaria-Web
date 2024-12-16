@@ -15,7 +15,7 @@ export type ProductRequest = {
 export type ProductResponse = {
   id: number;
   nome: string;
-  preco: number;
+  preco: number | string;
   categoria: string;
   descricao: string;
   imagem?: string | undefined;

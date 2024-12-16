@@ -8,10 +8,17 @@ export const productSchema = z.object({
     .string()
     .min(1, 'O nome do produto deve ser informado'),
   preco: z
-    .string()
-    .max(9, 'O preço deve ser abaixo de R$ 1000,00')
-    .transform((val: string) => parseFloat(val.slice(3).replace(',', '.')))
-    .refine((val: number) => val > 0, 'O preço do produto deve ser maior que zero'),
+    .union(
+      [
+        z
+          .number(),
+        z
+          .string()
+          .max(9, 'O preço deve ser abaixo de R$ 1000,00')
+          .transform((val: string) => parseFloat(val.slice(3).replace(',', '.')))
+          .refine((val: number) => val > 0, 'O preço do produto deve ser maior que zero'),
+      ]
+    ),
   categoria: z
     .enum(
       ['Pães', 'Doces', 'Salgados'], 
