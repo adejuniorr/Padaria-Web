@@ -5,6 +5,7 @@ import { ProductList } from './product-list/ProductList';
 
 export default function ProductStock() {
   const {
+    loading,
     filteredProducts,
     handleSearch,
     categories,
@@ -28,6 +29,7 @@ export default function ProductStock() {
         <hr className='w-[95%] border-2 border-orange mb-3' />
       </div>
       <ProductList
+        loading={loading}
         products={filteredProducts}
         categories={categories}
       />

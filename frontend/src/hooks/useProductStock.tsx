@@ -7,6 +7,7 @@ import { RiCake3Line } from 'react-icons/ri';
 import { MdOutlineBakeryDining } from 'react-icons/md';
 
 const useProductStock = () => {
+  const [loading, setLoading] = useState(true);
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<ProductResponse[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
@@ -36,6 +37,7 @@ const useProductStock = () => {
 
         if (response.success) {
           setProducts(response.data);
+          setLoading(false);
         }
       });
   }, []);
@@ -48,7 +50,7 @@ const useProductStock = () => {
     }
   }, [selectedCategory, products]);
 
-  const handleSearch = (search: string) => { // TODO: refactoring (SOLID principles)
+  const handleSearch = (search: string) => {
     if (search === '') {
       setFilteredProducts(products);
     } else {
@@ -57,6 +59,7 @@ const useProductStock = () => {
   }
 
   return {
+    loading,
     handleSearch,
     products,
     filteredProducts,
