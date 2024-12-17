@@ -8,6 +8,9 @@ import { ProductForm } from "../../validation/productSchema";
 export const CreateProductProvider = ({ children }: { children: ReactNode }) => {
   const [price, setPrice] = useState<string>('R$ 0,00');
   const [pageLoading, setPageLoading] = useState<boolean>(false);
+  const [openAlertWarning, setOpenAlertWarning] = useState<boolean>(false);
+  const [errorWarningMessage, setErrorWarningMessage] = useState<string>("");
+  const [openErrorWarning, setOpenErrorWarning] = useState<boolean>(false);
   const [productRequest, setProductRequest] = useState<ProductRequest>({
     id: 1,
     nome: '',
@@ -52,17 +55,18 @@ export const CreateProductProvider = ({ children }: { children: ReactNode }) => 
       );
 
       setTimeout(() => {
-        setPageLoading(false);
-        alert("Produto cadastrado com sucesso! \nVocê será redirecionado para a página inicial =)");
-        navigate('/');
-      }, 2000)
+        setOpenAlertWarning(true);
+      }, 2000);
     } catch (error) {
-      setPageLoading(false);
+      setTimeout(() => {
+        setOpenErrorWarning(true);
+      }, 2000);
+
       if (axios.isAxiosError(error) && error.response?.status === 409) {
-        alert("Já existe um produto cadastrado com este nome");
+        setErrorWarningMessage("Já existe um produto cadastrado com este nome");
       } else {
-        alert("Ocorreu um erro ao cadastrar o produto.");
-        console.error("Erro ao enviar o produto:", error);
+        setErrorWarningMessage("Ocorreu um erro ao cadastrar o produto. Verifique o console do navegador.");
+        console.error("[CADASTRO] Erro ao cadastrar produto:", error);
       }
     }
   };
@@ -84,16 +88,18 @@ export const CreateProductProvider = ({ children }: { children: ReactNode }) => 
     try {
       await axios.post(`http://localhost:8000/api/produtos/${id}`, formData);
 
-      setPageLoading(false);
-      alert('Produto atualizado com sucesso! \nVocê será redirecionado para a página inicial =)');
-      navigate('/');
+      setTimeout(() => {
+        setOpenAlertWarning(true);
+      }, 1000);
     } catch (error) {
-      setPageLoading(false);
+      setTimeout(() => {
+        setOpenErrorWarning(true);
+      }, 1000);
       if (axios.isAxiosError(error) && error.response?.status === 409) {
-        alert("Já existe um produto cadastrado com este nome");
+        setErrorWarningMessage("Já existe um produto cadastrado com este nome");
       } else {
-        alert("Ocorreu um erro ao cadastrar o produto.");
-        console.error("Erro ao enviar o produto:", error);
+        setErrorWarningMessage("Ocorreu um erro ao editar o produto. Verifique o console do navegador.");
+        console.error("[EDIÇÃO] Erro ao editar o produto:", error);
       }
     }
   };
@@ -151,18 +157,24 @@ export const CreateProductProvider = ({ children }: { children: ReactNode }) => 
   }
 
   const handleDeleteProduct = async () => {
-    if (confirm('Deseja realmente excluir esse produto?')) {
-      setPageLoading(true);
-      await axios.delete(`http://localhost:8000/api/produtos/${id}`);
+    setPageLoading(true);
+    await axios.delete(`http://localhost:8000/api/produtos/${id}`);
+
+    setTimeout(() => {
       setPageLoading(false);
       navigate('/');
-    }
+    }, 1000);
   };
 
   return (
     <CreateProductContext.Provider value={{
       pageLoading,
       setPageLoading,
+      openAlertWarning,
+      setOpenAlertWarning,
+      openErrorWarning,
+      setOpenErrorWarning,
+      errorWarningMessage,
       onSubmitRegister,
       onSubmitUpdate,
       price,
