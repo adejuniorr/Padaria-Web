@@ -23,7 +23,7 @@ export const InputField = ({ label, input, error, vertical, loading }: InputFiel
   }, [loading]);
 
   return (
-    <div className="w-full">
+    <div className="w-full rounded-md has-[:focus]:outline has-[:focus]:outline-orange">
       <span className={`${vertical ? " flex-col" : "flex-row"} flex gap-2 rounded-md border border-black bg-white px-4 py-3`}>
         <label className='w-fit font-bold'>{label}:</label>
         {loading ? (

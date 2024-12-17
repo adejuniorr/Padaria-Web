@@ -54,29 +54,28 @@ export default function EditProduct() {
           setValue("descricao", produto.descricao);
 
           setProductResponse(produto);
-          setPrice("R$ " + produto.preco.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+          setPrice(
+            "R$ " + produto.preco.toLocaleString(
+              'pt-BR', {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
+            }
+            )
+          );
         }
       });
   }, [id, setPrice, setProductResponse, setValue]);
 
   useEffect(() => {
-    if (productResponse.preco !== 0) {
-      setLoading(false);
-    }
+    if (productResponse.preco !== 0) setLoading(false);
   }, [productResponse]);
 
   const onImageChange = (file: File | null) => {
     if (file) {
-      setProductRequest({
-        ...productRequest,
-        imagem: file,
-      })
+      setProductRequest({ ...productRequest, imagem: file });
       setValue("imagem", file);
     } else {
-      setProductRequest({
-        ...productRequest,
-        imagem: undefined
-      });
+      setProductRequest({ ...productRequest, imagem: undefined });
       setValue("imagem", null);
     }
   };
@@ -84,7 +83,9 @@ export default function EditProduct() {
   if (pageLoading) {
     return (
       <div className='flex items-center justify-center h-screen'>
-        <h1 className='text-3xl text-brown font-pacifico flex flex-row gap-2'><CgSpinner className='animate-spin' /> Carregando</h1>
+        <h1 className='text-3xl text-brown font-pacifico flex flex-row gap-2'>
+          <CgSpinner className='animate-spin' /> Carregando
+        </h1>
       </div>
     );
   }
@@ -104,54 +105,54 @@ export default function EditProduct() {
         <ProductCard
           product={productResponse}
           categories={categories}
-          editing={isEditing}
           prevImg={productResponse.imagem}
           onImageChange={onImageChange}
+          editing={isEditing}
           loading={loading}
         />
         <span>{errors.imagem && <i>{errors.imagem.message?.toString()}</i>}</span>
       </div>
       <div className='w-full flex flex-col gap-4 px-6'>
         <InputField
-          loading={loading}
           label='Nome'
           error={errors.nome}
+          loading={loading}
           input={
             <input
               type="text"
-              placeholder='Digite o nome do produto'
               value={productResponse.nome}
               {...register('nome')}
               onChangeCapture={handleNameChange}
+              placeholder='Digite o nome do produto'
               className='outline-none w-full disabled:text-gray-600 disabled:cursor-not-allowed'
               disabled={isEditing ? false : true}
             />
           }
         />
         <InputField
-          loading={loading}
           label='Preço'
           error={errors.preco}
+          loading={loading}
           input={
             <input
               type="text"
               value={price}
-              placeholder='Digite o preço (apenas números)*'
-              onChangeCapture={handlePriceChange}
               {...register('preco')}
+              onChangeCapture={handlePriceChange}
+              placeholder='Digite o preço (apenas números)*'
               className='outline-none w-full disabled:text-gray-600 disabled:cursor-not-allowed'
               disabled={isEditing ? false : true}
             />
           }
         />
         <InputField
-          loading={loading}
           label='Categoria'
           error={errors.categoria}
+          loading={loading}
           input={
             <select
-              {...register('categoria')}
               value={productResponse.categoria}
+              {...register('categoria')}
               onChangeCapture={handleCategoryChange}
               className='outline-none w-full cursor-pointer bg-white disabled:text-gray-600 disabled:cursor-not-allowed'
               disabled={isEditing ? false : true}
@@ -164,16 +165,16 @@ export default function EditProduct() {
           }
         />
         <InputField
-          loading={loading}
           label='Descrição'
-          error={errors.descricao}
           vertical
+          error={errors.descricao}
+          loading={loading}
           input={
             <textarea
-              value={productResponse.descricao}
               rows={3}
-              placeholder='Digite aqui uma breve descrição sobre o produto (opcional)'
+              value={productResponse.descricao}
               {...register('descricao')}
+              placeholder='Digite aqui uma breve descrição sobre o produto (opcional)'
               onChangeCapture={handleDescriptionChange}
               className='outline-none w-full resize-none disabled:text-gray-600 disabled:cursor-not-allowed'
               disabled={isEditing ? false : true}
@@ -182,29 +183,26 @@ export default function EditProduct() {
         />
       </div>
       <div className='flex flex-col items-center gap-4 sticky bottom-0 z-40 bg-vanilla border border-black pt-4 rounded-t-[2rem] bg-none w-full'>
-        <Button type={
-          isEditing
-            ? 'button'
-            : 'submit'
-        }
-          onClick={() => setIsEditing(!isEditing)}
-        >
+        <Button type={isEditing ? 'button' : 'submit'} onClick={() => setIsEditing(!isEditing)}>
           {isEditing ? 'Salvar Alterações' : 'Editar Produto'}
         </Button>
         {isEditing && (
-          <Button type='button' bgColor='bg-orange' onClick={() => {
-            location.reload();
-            setIsEditing(false)
-          }}>
+          <Button
+            type='button'
+            bgColor='bg-orange'
+            onClick={() => {
+              location.reload();
+              setIsEditing(false)
+            }}
+          >
             Cancelar
           </Button>
         )}
         <Button type='button' bgColor='bg-brown' onClick={handleDeleteProduct}>
           Excluir Produto
         </Button>
-        <Link to="/" className='flex items-center gap-2 text-xl mx-auto hover:underline pb-4'>
-          <FaArrowLeft />
-          Voltar
+        <Link to="/" className='flex items-center gap-2 text-xl mx-auto pb-4 hover:underline focus:underline focus:outline-none'>
+          <FaArrowLeft /> Voltar
         </Link>
       </div>
     </form>

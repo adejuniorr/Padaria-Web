@@ -37,10 +37,12 @@ const ImageUploader = ({ onImageChange, prevImg, pageLoad }: ImageUploaderProps)
           />
           {!pageLoad && (
             <div className="absolute z-20 bottom-0 flex justify-center w-full gap-4 sm:gap-6">
-              <label htmlFor="image-input" className="bg-orange px-3 py-1 text-white text-md sm:text-xl rounded-t-md cursor-pointer">
-                <FaEdit />
-              </label>
-              <button type="button" onClick={handleImageDelete} className="bg-orange px-3 py-1 text-white text-md sm:text-xl rounded-t-md">
+              <button type="button" className="bg-orange text-white text-md sm:text-xl rounded-t-md overflow-hidden focus:outline-white focus:outline-offset-2">
+                <label htmlFor="image-input" className="flex px-3 py-1 cursor-pointer">
+                  <FaEdit />
+                </label>
+              </button>
+              <button type="button" onClick={handleImageDelete} className="bg-orange px-3 py-1 text-white text-md sm:text-xl rounded-t-md focus:outline-white focus:outline-offset-2">
                 <FaTrash />
               </button>
             </div>

@@ -45,7 +45,7 @@ export default function CreateProduct() {
   } = useContext(CreateProductContext);
 
   const [dots, setDots] = useState(""); // Estado para os pontos
-  
+
   useEffect(() => {
     if (!pageLoading) return;
 
@@ -58,10 +58,7 @@ export default function CreateProduct() {
 
   const onImageChange = (file: File | null) => {
     if (file) {
-      setProductRequest({
-        ...productRequest,
-        imagem: file,
-      })
+      setProductRequest({ ...productRequest, imagem: file });
       setValue("imagem", file);
     } else {
       setProductRequest({ ...productRequest, imagem: undefined });
@@ -181,9 +178,8 @@ export default function CreateProduct() {
           <Button type='submit'>
             Cadastrar
           </Button>
-          <Link to="/" className='flex items-center gap-2 text-xl mx-auto hover:underline pb-4'>
-            <FaArrowLeft />
-            Voltar
+          <Link to="/" className='flex items-center gap-2 text-xl mx-auto pb-4 hover:underline bg-red-500 focus:outline-none'>
+            <FaArrowLeft /> Voltar
           </Link>
         </div>
       )}
