@@ -1,11 +1,16 @@
 type IconButtonProps = {
   type: "button" | "submit" | "reset",
   onClick: () => void,
-  children: React.ReactNode,
   highlighted?: boolean
+  children: React.ReactNode,
 }
 
-export const IconButton = ({ children, type, onClick, highlighted }: IconButtonProps) => {
+export const IconButton = ({
+  type,
+  onClick,
+  highlighted,
+  children,
+}: IconButtonProps) => {
   return (
     <button
       type={type}

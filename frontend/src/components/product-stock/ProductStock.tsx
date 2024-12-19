@@ -1,9 +1,9 @@
-import useProductStock from '../../hooks/useProductStock';
 import { SearchInput } from '../inputs/SearchInput';
 import { CategorySelector } from './category-selector/CategorySelector';
 import { ProductList } from './product-list/ProductList';
+import useProductStock from '../../hooks/useProductStock';
 
-export default function ProductStock() {
+export const ProductStock = () =>  {
   const {
     loading,
     filteredProducts,
@@ -13,8 +13,8 @@ export default function ProductStock() {
     setSelectedCategory,
   } = useProductStock();
 
-  return (// TODO: substituir tag main por div
-    <main className='pb-4 h-screen'>
+  return (
+    <div className='pb-4 h-screen'>
       <h2 className='font-pacifico text-orange text-center py-4 h-[13%]'>
         Estoque
       </h2>
@@ -33,6 +33,6 @@ export default function ProductStock() {
         products={filteredProducts}
         categories={categories}
       />
-    </main>
+    </div>
   );
 }

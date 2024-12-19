@@ -1,7 +1,7 @@
-import { Category, ProductResponse } from "../../../types/types";
 import { useNavigate } from 'react-router-dom';
 import { ProductCard } from "../../product-card/ProductCard";
-import ProductCardSkeleton from "../../product-card/ProductCardSkeleton";
+import { ProductCardSkeleton } from "../../product-card/ProductCardSkeleton";
+import { Category, ProductResponse } from "../../../types/types";
 
 type ProductListProps = {
   loading?: boolean,
