@@ -1,11 +1,16 @@
 type ButtonProps = {
   type: 'button' | 'submit' | 'reset';
-  children: React.ReactNode;
   onClick?: () => void;
   bgColor?: string;
+  children: React.ReactNode;
 }
 
-export const Button = ({ type, children, onClick, bgColor }: ButtonProps) => {
+export const Button = ({
+  type,
+  onClick,
+  bgColor,
+  children,
+}: ButtonProps) => {
   return (
     <button
       type={type}

@@ -1,27 +1,27 @@
-import { IoWarningOutline } from "react-icons/io5"
 import { Button } from "../buttons/Button"
 import { FaXmark } from "react-icons/fa6"
+import { IoWarningOutline } from "react-icons/io5"
 
 type WarningProps = {
   open: boolean,
   type: "confirm" | "alert",
+  icon?: JSX.Element,
   warningMessage: string,
   denyButtonMessage: string,
   onDenyClose: () => void,
   confirmButtonMessage?: string,
   onConfirmClose?: () => void,
-  icon?: JSX.Element,
 }
 
-const Warning = ({
+export const Warning = ({
   open,
   type,
+  icon,
   warningMessage,
   denyButtonMessage,
   onDenyClose,
   confirmButtonMessage,
   onConfirmClose,
-  icon,
 }: WarningProps) => {
   return (
     <>
@@ -51,5 +51,3 @@ const Warning = ({
     </>
   )
 }
-
-export default Warning

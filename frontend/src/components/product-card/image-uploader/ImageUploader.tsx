@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { FaEdit, FaPlus, FaTrash } from "react-icons/fa"
+import React, { useState } from "react";
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 
 type ImageUploaderProps = {
   onImageChange: (file: File | null) => void;
@@ -7,7 +7,11 @@ type ImageUploaderProps = {
   pageLoad?: boolean;
 }
 
-const ImageUploader = ({ onImageChange, prevImg, pageLoad }: ImageUploaderProps) => {
+export const ImageUploader = ({
+  onImageChange,
+  prevImg,
+  pageLoad
+}: ImageUploaderProps) => {
   const [imgURL, setImgURL] = useState<string>("");
   const [prevImgURL, setPrevImgURL] = useState<string>(prevImg!);
 
@@ -65,5 +69,3 @@ const ImageUploader = ({ onImageChange, prevImg, pageLoad }: ImageUploaderProps)
     </div>
   );
 };
-
-export default ImageUploader;

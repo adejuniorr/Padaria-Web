@@ -1,30 +1,32 @@
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { Button } from '../buttons/Button';
-import { FaArrowLeft } from 'react-icons/fa';
-import { useProductForm } from '../../hooks/useProductForm';
+import { Warning } from '../warning/Warning';
 import { InputField } from '../inputs/InputField';
 import { ProductCard } from '../product-card/ProductCard';
-import { TiThSmallOutline } from 'react-icons/ti';
 import { PiBreadFill } from 'react-icons/pi';
 import { RiCake3Line } from 'react-icons/ri';
+import { TiThSmallOutline } from 'react-icons/ti';
 import { MdOutlineBakeryDining } from 'react-icons/md';
-import { useContext, useEffect, useState } from 'react';
-import { CreateProductContext } from '../../contexts/create-product-ctx/CreateProductContext';
-import Warning from '../warning/Warning';
+import { FaArrowLeft, FaRegCheckCircle } from 'react-icons/fa';
 
-export default function CreateProduct() {
+import { useProductForm } from '../../hooks/useProductForm';
+import { SharedContext } from '../../contexts/shared-context/SharedContext';
+import { CreateProductContext } from '../../contexts/create-product/CreateProductContext';
+
+export const CreateProduct = () => {
   const { register, setValue, handleSubmit, formState: { errors } } = useProductForm();
-  const [openWarning, setOpenWarning] = useState<boolean>(false);
   const navigate = useNavigate();
   const {
-    pageLoading,
-    setPageLoading,
-    openAlertWarning,
-    openErrorWarning,
-    setOpenErrorWarning,
-    errorWarningMessage,
-    setOpenAlertWarning,
-    onSubmitRegister,
+    openAlert,
+    setOpenAlert,
+    openConfirm,
+    setOpenConfirm,
+    openError,
+    setOpenError,
+    errorMessage,
+
     price,
     productRequest,
     setProductRequest,
@@ -33,6 +35,12 @@ export default function CreateProduct() {
     handlePriceChange,
     handleCategoryChange,
     handleDescriptionChange,
+
+    pageLoading,
+    setPageLoading,
+  } = useContext(SharedContext);
+  const {
+    onSubmitRegister,
   } = useContext(CreateProductContext);
 
   const categories = [
@@ -58,14 +66,14 @@ export default function CreateProduct() {
 
   useEffect(() => {
     if (!pageLoading) return;
-    if (openAlertWarning || openErrorWarning) return;
-    
+    if (openAlert || openError) return;
+
     const interval = setInterval(() => {
       setDots((prev) => (prev.length < 3 ? prev + "." : ""));
     }, 200);
 
     return () => clearInterval(interval);
-  }, [openAlertWarning, openErrorWarning, pageLoading]);
+  }, [openAlert, openError, pageLoading]);
 
   const onImageChange = (file: File | null) => {
     if (file) {
@@ -151,7 +159,7 @@ export default function CreateProduct() {
               <Button type='submit'>
                 Cadastrar
               </Button>
-              <button type='button' onClick={() => setOpenWarning(true)} className='flex items-center gap-2 text-xl mx-auto hover:underline pb-4'>
+              <button type='button' onClick={() => setOpenConfirm(true)} className='flex items-center gap-2 text-xl mx-auto hover:underline pb-4'>
                 <FaArrowLeft />
                 Voltar
               </button>
@@ -184,27 +192,28 @@ export default function CreateProduct() {
                   redirecionado(a) para uma nova página =)
                 </span>
               </div>
-              {openAlertWarning && (
+              {openAlert && (
                 <Warning
                   open
                   type='alert'
                   warningMessage="Produto cadastrado com sucesso! Você será redirecionado para a página inicial."
                   denyButtonMessage="Ok, prosseguir"
                   onDenyClose={() => {
-                    setOpenAlertWarning(false);
+                    setOpenAlert(false);
                     setPageLoading(false);
                     navigate('/');
                   }}
+                  icon={<FaRegCheckCircle />}
                 />
               )}
-              {openErrorWarning && (
+              {openError && (
                 <Warning
                   open
                   type='alert'
-                  warningMessage={errorWarningMessage}
+                  warningMessage={errorMessage}
                   denyButtonMessage='Voltar'
                   onDenyClose={() => {
-                    setOpenErrorWarning(false);
+                    setOpenError(false);
                     setPageLoading(false);
                   }}
                 />
@@ -217,19 +226,19 @@ export default function CreateProduct() {
             <Button type='submit'>
               Cadastrar
             </Button>
-            <button type='button' onClick={() => setOpenWarning(true)} className='flex items-center gap-2 text-xl mx-auto pb-4 hover:underline bg-red-500 focus:outline-none'>
+            <button type='button' onClick={() => setOpenConfirm(true)} className='flex items-center gap-2 text-xl mx-auto pb-4 hover:underline bg-red-500 focus:outline-none'>
               <FaArrowLeft /> Voltar
             </button>
           </div>
         )}
       </form >
       {<Warning
-        open={openWarning}
+        open={openConfirm}
         type='confirm'
         warningMessage="Por favor, confirme se você deseja cancelar o cadastro do produto."
         confirmButtonMessage="Sim, cancelar cadastro de produto"
         denyButtonMessage="Não, continuar cadastro"
-        onDenyClose={() => setOpenWarning(false)}
+        onDenyClose={() => setOpenConfirm(false)}
         onConfirmClose={() => navigate('/')}
       />}
     </>
