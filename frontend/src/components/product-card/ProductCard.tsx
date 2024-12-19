@@ -1,6 +1,6 @@
+import { ImageUploader } from "./image-uploader/ImageUploader"
 import { CgSpinnerAlt } from "react-icons/cg";
 import { Category, ProductResponse } from "../../types/types"
-import ImageUploader from "./image-uploader/ImageUploader"
 
 type ProductCardProps = {
   product: ProductResponse,
@@ -8,7 +8,7 @@ type ProductCardProps = {
   creating?: boolean,
   editing?: boolean,
   prevImg?: string;
-  onImageChange?: (file: File | null) => void; // Callback para manipular mudanças de imagem
+  onImageChange?: (file: File | null) => void;
   loading?: boolean;
   pageLoad?: boolean;
 }
@@ -57,7 +57,7 @@ export const ProductCard = ({ product, categories, creating, editing, prevImg, o
           ) : (
             <>
               <div className="flex flex-col gap-3">
-                <p className='font-bold text-xl line-clamp-2'>{product.nome}</p>
+                <p className='font-bold text-xl line-clamp-2'>{product.nome ? product.nome : "Nome do Produto"}</p>
                 <p className='flex items-center gap-1 rounded-full bg-orange text-brown bg-opacity-70 w-fit px-2'>
                   {categories.find((category) => category.name === product.categoria)?.icon}
                   {product.categoria}

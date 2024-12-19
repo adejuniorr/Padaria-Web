@@ -1,12 +1,16 @@
+import App from './App'
+import './global.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import './global.css'
-import ProductStock from './components/product-stock/ProductStock'
-import EditProduct from './components/edit-product/EditProduct'
-import CreateProduct from './components/create-product/CreateProduct'
-import App from './App'
-import { CreateProductProvider } from './contexts/create-product-ctx/CreateProductProvider'
+
+import { ProductStock } from './components/product-stock/ProductStock'
+import { EditProduct } from './components/edit-product/EditProduct'
+import { CreateProduct } from './components/create-product/CreateProduct'
+
+import { SharedContextProvider } from './contexts/shared-context/SharedContextProvider'
+import { CreateProductProvider } from './contexts/create-product/CreateProductProvider'
+import { EditProductProvider } from './contexts/edit-product/EditProductProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,21 +21,25 @@ createRoot(document.getElementById('root')!).render(
           <Route
             path="/produto/:id"
             element={
-              <CreateProductProvider>
-                <EditProduct />
-              </CreateProductProvider>
+              <SharedContextProvider>
+                <EditProductProvider>
+                  <EditProduct />
+                </EditProductProvider>
+              </SharedContextProvider>
             }
           />
         </Route>
         <Route
           path="/novo"
           element={
-            <CreateProductProvider>
-              <CreateProduct />
-            </CreateProductProvider>
+            <SharedContextProvider>
+              <CreateProductProvider>
+                <CreateProduct />
+              </CreateProductProvider>
+            </SharedContextProvider>
           }
         />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
-)
+);

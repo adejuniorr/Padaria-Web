@@ -20,3 +20,7 @@ export type ProductResponse = {
   descricao: string;
   imagem?: string | undefined;
 }
+
+export interface ResponseError extends Error {
+  status?: number;
+}

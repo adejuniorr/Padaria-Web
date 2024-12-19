@@ -10,7 +10,7 @@ type InputFieldProps = {
 }
 
 export const InputField = ({ label, input, error, vertical, loading }: InputFieldProps) => {
-  const [dots, setDots] = useState(""); // Estado para os pontos
+  const [dots, setDots] = useState("");
 
   useEffect(() => {
     if (!loading) return;

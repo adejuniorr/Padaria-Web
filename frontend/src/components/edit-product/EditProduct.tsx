@@ -1,42 +1,36 @@
-import axios from 'axios';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useProductForm } from '../../hooks/useProductForm';
 import { useContext, useEffect, useState } from 'react';
-import { CreateProductContext } from '../../contexts/create-product-ctx/CreateProductContext';
-import { InputField } from '../inputs/InputField';
-import { ProductCard } from '../product-card/ProductCard';
-import { TiThSmallOutline } from 'react-icons/ti';
-import { PiBreadFill } from 'react-icons/pi';
-import { RiCake3Line } from 'react-icons/ri';
-import { MdOutlineBakeryDining } from 'react-icons/md';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+
 import { Button } from '../buttons/Button';
+import { InputField } from '../inputs/InputField';
+import { Warning } from '../warning/Warning';
+import { ProductCard } from '../product-card/ProductCard';
 import { FaArrowLeft, FaRegCheckCircle } from 'react-icons/fa';
-import Warning from '../warning/Warning';
 import { CgSpinner } from 'react-icons/cg';
 import { AiFillDelete } from 'react-icons/ai';
 
-export default function EditProduct() {
-  const { id } = useParams<{ id: string }>();
+import { SharedContext } from '../../contexts/shared-context/SharedContext';
+import { EditProductContext } from '../../contexts/edit-product/EditProductContext';
+
+import { useProductForm } from '../../hooks/useProductForm';
+import { getProductById } from '../../services/getProductById';
+import { CATEGORIES as categories } from '../../contants/categories';
+
+export const EditProduct = () => {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
   const { register, setValue, handleSubmit, formState: { errors } } = useProductForm();
-  const categories = [
-    { name: 'Todos', icon: <TiThSmallOutline /> },
-    { name: 'Pães', icon: <PiBreadFill /> },
-    { name: 'Doces', icon: <RiCake3Line /> },
-    { name: 'Salgados', icon: <MdOutlineBakeryDining /> },
-  ];
-  const [openWarning, setOpenWarning] = useState<boolean>(false);
   const {
-    pageLoading,
-    setPageLoading,
+    openConfirm,
+    setOpenConfirm,
+    openAlert,
+    setOpenAlert,
+    openError,
+    setOpenError,
+    errorMessage,
+
     price,
     setPrice,
-    openAlertWarning,
-    setOpenAlertWarning,
-    openErrorWarning,
-    setOpenErrorWarning,
-    errorWarningMessage,
-    onSubmitUpdate,
     productRequest,
     setProductRequest,
     productResponse,
@@ -45,39 +39,41 @@ export default function EditProduct() {
     handlePriceChange,
     handleCategoryChange,
     handleDescriptionChange,
+
+    pageLoading,
+    setPageLoading,
+  } = useContext(SharedContext);
+  const {
+    onSubmitUpdate,
     handleDeleteProduct,
-  } = useContext(CreateProductContext);
-  const [loading, setLoading] = useState<boolean>(true);
+  } = useContext(EditProductContext);
+  const [componentsLoading, setComponentsLoading] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/produtos/${id}`)
-      .then((res) => {
-        const response = res.data;
+    (
+      async () => {
+        const produto = await getProductById(id);
 
-        if (response.success) {
-          const produto = response.produto;
+        setValue("nome", produto.nome);
+        setValue("preco", Number(produto.preco));
+        setValue("categoria", produto.categoria as 'Pães' | 'Doces' | 'Salgados');
+        setValue("descricao", produto.descricao);
 
-          setValue("nome", produto.nome);
-          setValue("preco", produto.preco);
-          setValue("categoria", produto.categoria);
-          setValue("descricao", produto.descricao);
-
-          setProductResponse(produto);
-          setPrice(
-            "R$ " + produto.preco.toLocaleString(
-              'pt-BR', {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            }
-            )
-          );
-        }
-      });
+        setProductResponse(produto);
+        setPrice(
+          "R$ " + produto.preco.toLocaleString(
+            'pt-BR', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          })
+        )
+      }
+    )(); // Função de execução imediata autoexecutável (IIFE - Immediately Invoked Function Expression)
   }, [id, setPrice, setProductResponse, setValue]);
 
   useEffect(() => {
-    if (productResponse.preco !== 0) setLoading(false);
+    if (productResponse.preco !== 0) setComponentsLoading(false);
   }, [productResponse]);
 
   const onImageChange = (file: File | null) => {
@@ -116,7 +112,7 @@ export default function EditProduct() {
               prevImg={productResponse.imagem}
               onImageChange={onImageChange}
               editing={isEditing}
-              loading={loading}
+              loading={componentsLoading}
             />
             <span>{errors.imagem && <i>{errors.imagem.message?.toString()}</i>}</span>
           </div>
@@ -124,7 +120,7 @@ export default function EditProduct() {
             <InputField
               label='Nome'
               error={errors.nome}
-              loading={loading}
+              loading={componentsLoading}
               input={
                 <input
                   type="text"
@@ -140,7 +136,7 @@ export default function EditProduct() {
             <InputField
               label='Preço'
               error={errors.preco}
-              loading={loading}
+              loading={componentsLoading}
               input={
                 <input
                   type="text"
@@ -156,7 +152,7 @@ export default function EditProduct() {
             <InputField
               label='Categoria'
               error={errors.categoria}
-              loading={loading}
+              loading={componentsLoading}
               input={
                 <select
                   value={productResponse.categoria}
@@ -176,7 +172,7 @@ export default function EditProduct() {
               label='Descrição'
               vertical
               error={errors.descricao}
-              loading={loading}
+              loading={componentsLoading}
               input={
                 <textarea
                   rows={3}
@@ -191,22 +187,24 @@ export default function EditProduct() {
             />
           </div>
           <div className='flex flex-col items-center gap-4 sticky bottom-0 z-40 bg-vanilla border border-black pt-4 rounded-t-[2rem] bg-none w-full'>
-            <Button type={isEditing ? 'button' : 'submit'} onClick={() => setIsEditing(!isEditing)}>
+            <Button type={isEditing ? 'button' : 'submit'}
+              onClick={() => setIsEditing(!isEditing)}
+            >
               {isEditing ? 'Salvar Alterações' : 'Editar Produto'}
             </Button>
             {isEditing && (
-              <Button
-                type='button'
-                bgColor='bg-orange'
+              <Button type='button' bgColor='bg-orange'
                 onClick={() => {
                   location.reload();
-                  setIsEditing(false)
+                  setIsEditing(false);
                 }}
               >
                 Cancelar
               </Button>
             )}
-            <Button type='button' bgColor='bg-brown' onClick={() => setOpenWarning(true)}>
+            <Button type='button' bgColor='bg-brown'
+              onClick={() => setOpenConfirm(true)}
+            >
               Excluir Produto
             </Button>
             <Link to="/" className='flex items-center gap-2 text-xl mx-auto pb-4 hover:underline focus:underline focus:outline-none'>
@@ -215,40 +213,44 @@ export default function EditProduct() {
           </div>
         </form>
       )}
-      {openWarning && (
+      {openConfirm && (
         <Warning
           open
           type='confirm'
           warningMessage={`Por favor, confirme se você deseja excluir ${productResponse.nome}`}
           denyButtonMessage="Não, voltar para edição"
           confirmButtonMessage="Sim, excluir produto"
-          onConfirmClose={handleDeleteProduct}
-          onDenyClose={() => setOpenWarning(false)}
+          onConfirmClose={() => {
+            setOpenConfirm(false);
+            handleDeleteProduct();
+            navigate('/');
+          }}
+          onDenyClose={() => setOpenConfirm(false)}
           icon={<AiFillDelete />}
         />
       )}
-      {openAlertWarning && (
+      {openAlert && (
         <Warning
           open
           type='alert'
           warningMessage={`Produto atualizado com sucesso! Você será redirecionado para a página inicial.`}
           denyButtonMessage="Ok, prosseguir"
           onDenyClose={() => {
-            setOpenAlertWarning(false);
+            setOpenAlert(false);
             setPageLoading(false);
             navigate('/');
           }}
           icon={<FaRegCheckCircle />}
         />
       )}
-      {openErrorWarning && (
+      {openError && (
         <Warning
           open
           type='alert'
-          warningMessage={errorWarningMessage}
+          warningMessage={errorMessage}
           denyButtonMessage='Voltar'
           onDenyClose={() => {
-            setOpenErrorWarning(false);
+            setOpenError(false);
             setPageLoading(false);
           }}
         />

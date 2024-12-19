@@ -21,10 +21,12 @@ export const productSchema = z.object({
     ),
   categoria: z
     .enum(
-      ['Pães', 'Doces', 'Salgados'], 
-      { errorMap: () => (
-        { message: 'Por favor, selecione uma categoria' }
-      )}
+      ['Pães', 'Doces', 'Salgados'],
+      {
+        errorMap: () => (
+          { message: 'Por favor, selecione uma categoria' }
+        )
+      }
     ),
   descricao: z
     .string()
@@ -33,7 +35,7 @@ export const productSchema = z.object({
   imagem: z
     .instanceof(File)
     .refine(
-      (file: File) => file?.size <= MAX_FILE_SIZE, 
+      (file: File) => file?.size <= MAX_FILE_SIZE,
       'O tamanho da imagem deve ser de até 5MB'
     )
     .refine(
