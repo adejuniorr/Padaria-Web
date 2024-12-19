@@ -1,46 +1,29 @@
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { ProductResponse } from '../types/types';
-import { TiThSmallOutline } from 'react-icons/ti';
-import { PiBreadFill } from 'react-icons/pi';
-import { RiCake3Line } from 'react-icons/ri';
-import { MdOutlineBakeryDining } from 'react-icons/md';
+import { getAllProducts } from '../services/getAllProducts';
+import { CATEGORIES } from '../contants/categories';
 
+/**
+ * Custom hook
+ * @returns retorna um conjunto de métodos e estados úteis para listar e filtrar produtos
+ */
 const useProductStock = () => {
+  const [loading, setLoading] = useState<boolean>(true);
   const [products, setProducts] = useState<ProductResponse[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<ProductResponse[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
-  const categories = [
-    {
-      name: 'Todos',
-      icon: <TiThSmallOutline />,
-    },
-    {
-      name: 'Pães',
-      icon: <PiBreadFill />,
-    },
-    {
-      name: 'Doces',
-      icon: <RiCake3Line />,
-    },
-    {
-      name: 'Salgados',
-      icon: <MdOutlineBakeryDining />,
-    },
-  ]
 
-  useEffect(() => { // TODO: refactoring (SOLID principles)
-    axios.get('http://localhost:8000/api/produtos')
-      .then((res) => {
-        const response = res.data;
-
-        if (response.success) {
-          setProducts(response.data);
-        }
-      });
+  useEffect(() => {
+    (
+      async () => {
+        const products = await getAllProducts();
+        setProducts(products);
+        setLoading(false);
+      }
+    )();
   }, []);
 
-  useEffect(() => { // TODO: refactoring (SOLID principles)
+  useEffect(() => {
     if (selectedCategory === 'Todos') {
       setFilteredProducts(products);
     } else {
@@ -48,21 +31,21 @@ const useProductStock = () => {
     }
   }, [selectedCategory, products]);
 
-  const handleSearch = (search: string) => { // TODO: refactoring (SOLID principles)
-    if (search === '') {
-      setFilteredProducts(products);
-    } else {
+  const handleSearch = (search: string) => {
+    if (search) {
       setFilteredProducts(products.filter((product) => product.nome.toLowerCase().includes(search.toLowerCase())));
+    } else {
+      setFilteredProducts(products);
     }
   }
 
   return {
+    loading,
     handleSearch,
-    products,
-    filteredProducts,
-    categories,
+    categories: CATEGORIES,
     selectedCategory,
     setSelectedCategory,
+    filteredProducts,
   }
 }
 

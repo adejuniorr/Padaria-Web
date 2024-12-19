@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { FaArrowRight, FaPlus } from "react-icons/fa"
+import { Link, useLocation } from "react-router-dom"
+
 import { FaXmark } from "react-icons/fa6"
-import { MdOutlineMenuOpen } from "react-icons/md"
 import { PiHouseBold } from "react-icons/pi";
-import { Link } from "react-router-dom"
+import { MdOutlineMenuOpen } from "react-icons/md"
+import { FaArrowRight, FaPlus } from "react-icons/fa"
 
 export const AsideMenu = () => {
-  const at = location.pathname;
+  const location = useLocation();
   const [open, setOpen] = useState(false);
 
   const toggleMenu = () => setOpen(!open);
+
+  const isAtPath = (path: string) => location.pathname === path;
 
   return (
     <aside className="fixed lg:block z-50">
@@ -21,18 +24,18 @@ export const AsideMenu = () => {
         <nav className="py-8 px-4">
           <h1 className="text-white font-pacifico mb-10">Padaria Web</h1>
           <ul className="flex flex-col gap-4">
-            <li className={`${at === "/" ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full`}>
-              <Link to="/" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3">
+            <li className={`${isAtPath("/") ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full hover:bg-orange hover:text-white`}>
+              <Link to="/" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3 rounded-full focus:outline-black">
                 <PiHouseBold className="text-xl" /> Estoque
               </Link>
             </li>
-            <li className={`${at === "/novo" ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full`}>
-              <Link to="/novo" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3">
+            <li className={`${isAtPath("/novo") ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full hover:bg-orange hover:text-white`}>
+              <Link to="/novo" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3 rounded-full focus:outline-black">
                 <FaPlus className="text-lg" /> Cadastrar Novo Produto
               </Link>
             </li>
-            <li className={`${at === "/relatorio" ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full`}>
-              <Link to="/relatorio" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3">
+            <li className={`${isAtPath("/relatorio") ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full hover:bg-orange hover:text-white`}>
+              <Link to="/relatorio" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3 rounded-full focus:outline-black">
                 <FaArrowRight className="text-lg" /> Gerar Relatório de Vendas
               </Link>
             </li>
