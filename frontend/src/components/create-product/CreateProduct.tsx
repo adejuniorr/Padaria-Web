@@ -226,7 +226,7 @@ export const CreateProduct = () => {
             <Button type='submit'>
               Cadastrar
             </Button>
-            <button type='button' onClick={() => setOpenConfirm(true)} className='flex items-center gap-2 text-xl mx-auto pb-4 hover:underline bg-red-500 focus:outline-none'>
+            <button type='button' onClick={() => setOpenConfirm(true)} className='flex items-center gap-2 text-xl mx-auto pb-4 hover:underline focus:outline-none'>
               <FaArrowLeft /> Voltar
             </button>
           </div>
