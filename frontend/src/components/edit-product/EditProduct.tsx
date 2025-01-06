@@ -14,7 +14,7 @@ import { EditProductContext } from '../../contexts/edit-product/EditProductConte
 
 import { useProductForm } from '../../hooks/useProductForm';
 import { getProductById } from '../../services/getProductById';
-import { CATEGORIES as categories } from '../../contants/categories';
+import { CATEGORIES as categories } from '../../constants/categories';
 
 export const EditProduct = () => {
   const navigate = useNavigate();
