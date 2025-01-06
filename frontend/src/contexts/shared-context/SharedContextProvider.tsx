@@ -23,6 +23,7 @@ export const SharedContextProvider = ({ children }: { children: ReactNode }) => 
     setProductResponse,
     handleNameChange,
     handlePriceChange,
+    handleQuantityChange,
     handleCategoryChange,
     handleDescriptionChange,
   } = useProductData();
@@ -47,6 +48,7 @@ export const SharedContextProvider = ({ children }: { children: ReactNode }) => 
       setProductResponse,
       handleNameChange,
       handlePriceChange,
+      handleQuantityChange,
       handleCategoryChange,
       handleDescriptionChange,
 

@@ -13,7 +13,7 @@ export const ProductList = ({ loading, products, categories }: ProductListProps)
   const navigate = useNavigate();
 
   return (
-    <ul className='flex flex-wrap justify-center gap-5 h-[385px] overflow-y-scroll w-full px-1 py-2 pb-4'>
+    <ul className='flex flex-wrap justify-center gap-5 h-[385px] overflow-y-scroll w-full px-1 py-4'>
       {loading ? (
         <>
           <ProductCardSkeleton />
@@ -29,6 +29,7 @@ export const ProductList = ({ loading, products, categories }: ProductListProps)
             <ProductCard
               product={product}
               categories={categories}
+              showQuantity
             />
           </li>
         ))

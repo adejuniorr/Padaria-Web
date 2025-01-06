@@ -33,6 +33,7 @@ export const CreateProduct = () => {
     productResponse,
     handleNameChange,
     handlePriceChange,
+    handleQuantityChange,
     handleCategoryChange,
     handleDescriptionChange,
 
@@ -125,6 +126,20 @@ export const CreateProduct = () => {
                 }
               />
               <InputField
+                label='Estoque'
+                error={errors.qtd_em_estoque}
+                input={
+                  <input
+                    type="number"
+                    placeholder='Digite a quantidade em estoque'
+                    {...register('qtd_em_estoque')}
+                    onChangeCapture={handleQuantityChange}
+                    className='outline-none w-full'
+                    defaultValue={0}
+                  />
+                }
+              />
+              <InputField
                 label='Categoria'
                 error={errors.categoria}
                 input={
@@ -166,17 +181,18 @@ export const CreateProduct = () => {
             </div>
           </div>
         )}
-        <div className={`${!pageLoading ? "w-fit lg:w-[50%] lg:h-screen lg:bg-orange" : "w-full lg:w-full bg-orange h-screen gap-8"} relative flex flex-col items-center justify-center lg:mx-auto`}>
+        <div className={`${!pageLoading ? "w-fit lg:w-[50%] lg:h-screen lg:bg-orange lg:bg-opacity-90" : "w-full lg:w-full bg-orange h-screen gap-8"} relative flex flex-col items-center justify-center lg:mx-auto`}>
           <span className={`${!pageLoading ? "hidden lg:block" : ""} text-5xl font-pacifico text-white mb-3`}>
             Prévia
           </span>
-          <span className={`${!pageLoading ? "" : "hidden lg:block"}  lg:hidden block font-pacifico text-xl bg-orange text-white rounded-t-lg px-4 pt-1 pb-2 relative top-1 z-10 w-fit self-start`}>
+          <span className={`${!pageLoading ? "" : "hidden lg:block"}  lg:hidden block font-pacifico text-2xl bg-orange text-white rounded-t-lg px-4 pt-1 pb-2 relative top-1 right-0 left-0 mr-auto ml-auto z-10 w-fit self-start`}>
             Prévia
           </span>
           <ProductCard
             product={productResponse}
             categories={categories}
             creating
+            showQuantity
             onImageChange={onImageChange}
             pageLoad={pageLoading}
           />

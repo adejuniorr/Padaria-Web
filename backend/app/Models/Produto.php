@@ -11,6 +11,7 @@ class Produto extends Model
         'categoria',
         'descricao',
         'preco',
+        'qtd_em_estoque',
         'imagem',
     ];
 }
