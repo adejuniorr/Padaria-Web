@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { ProductResponse } from '../types/types';
 import { getAllProducts } from '../services/getAllProducts';
-import { CATEGORIES } from '../contants/categories';
+import { CATEGORIES } from '../constants/categories';
 
 /**
  * Custom hook
