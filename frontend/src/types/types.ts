@@ -10,6 +10,7 @@ export type ProductRequest = {
   categoria: string;
   descricao: string;
   imagem?: File | null;
+  qtd_em_estoque: number;
 };
 
 export type ProductResponse = {
@@ -19,6 +20,7 @@ export type ProductResponse = {
   categoria: string;
   descricao: string;
   imagem?: string | undefined;
+  qtd_em_estoque: number;
 }
 
 export interface ResponseError extends Error {

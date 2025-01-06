@@ -21,6 +21,7 @@ export const CreateProductProvider = ({ children }: { children: ReactNode }) => 
     formData.append("categoria", data.categoria);
     formData.append("descricao", data.descricao || "");
     formData.append("preco", data.preco.toString());
+    formData.append("qtd_em_estoque", data.qtd_em_estoque.toString());
 
     if (data.imagem instanceof File) {
       formData.append("imagem", data.imagem);
