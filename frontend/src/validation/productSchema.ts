@@ -44,6 +44,20 @@ export const productSchema = z.object({
     )
     .optional()
     .nullable(),
+  qtd_em_estoque: z
+    .union(
+      [
+        z
+          .number()
+          .int()
+          .positive(),
+        z
+          .string()
+          .min(1, 'A quantidade em estoque deve ser informada')
+          .max(4, 'A quantidade em estoque deve ser 9999 no máximo')
+          .transform((val: string) => parseInt(val))
+      ]
+    )
 });
 
 export type ProductForm = z.infer<typeof productSchema>;

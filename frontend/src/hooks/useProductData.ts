@@ -13,6 +13,7 @@ export const useProductData = () => {
     categoria: '',
     descricao: '',
     preco: 0.00,
+    qtd_em_estoque: 0,
     imagem: null,
   });
   const [productResponse, setProductResponse] = useState<ProductResponse>({
@@ -21,6 +22,7 @@ export const useProductData = () => {
     categoria: 'Categoria',
     descricao: 'Sem descrição',
     preco: 0.00,
+    qtd_em_estoque: 0,
     imagem: undefined,
   });
 
@@ -54,6 +56,12 @@ export const useProductData = () => {
     setProductResponse({ ...productResponse, preco: numericValue / 100 });
   };
 
+  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const quantity = Number(event.target.value);
+
+    setProductResponse({ ...productResponse, qtd_em_estoque: quantity });
+  };
+
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const category = event.target.value;
 
@@ -85,6 +93,7 @@ export const useProductData = () => {
     setProductResponse,
     handleNameChange,
     handlePriceChange,
+    handleQuantityChange,
     handleCategoryChange,
     handleDescriptionChange,
   }

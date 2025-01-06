@@ -19,6 +19,7 @@ type SharedContextProps = {
   setProductResponse: (value: ProductResponse) => void;
   handleNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handlePriceChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleQuantityChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleCategoryChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   handleDescriptionChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
 
@@ -38,12 +39,13 @@ export const SharedContext = createContext<SharedContextProps>({
 
   price: '',
   setPrice: () => { },
-  productRequest: { id: 1, nome: '', categoria: '', descricao: '', preco: 0.00, imagem: null },
+  productRequest: { id: 1, nome: '', categoria: '', descricao: '', preco: 0.00, imagem: null, qtd_em_estoque: 0 },
   setProductRequest: () => { },
-  productResponse: { id: 1, nome: 'Nome do Produto', categoria: 'Categoria', descricao: 'Sem descrição', preco: 0.00, imagem: undefined },
+  productResponse: { id: 1, nome: 'Nome do Produto', categoria: 'Categoria', descricao: 'Sem descrição', preco: 0.00, imagem: undefined, qtd_em_estoque: 0 },
   setProductResponse: () => { },
   handleNameChange: () => { },
   handlePriceChange: () => { },
+  handleQuantityChange: () => { },
   handleCategoryChange: () => { },
   handleDescriptionChange: () => { },
 

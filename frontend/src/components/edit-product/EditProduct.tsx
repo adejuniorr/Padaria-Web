@@ -37,6 +37,7 @@ export const EditProduct = () => {
     setProductResponse,
     handleNameChange,
     handlePriceChange,
+    handleQuantityChange,
     handleCategoryChange,
     handleDescriptionChange,
 
@@ -44,11 +45,13 @@ export const EditProduct = () => {
     setPageLoading,
   } = useContext(SharedContext);
   const {
+    isEditing, 
+    setIsEditing,
     onSubmitUpdate,
     handleDeleteProduct,
   } = useContext(EditProductContext);
   const [componentsLoading, setComponentsLoading] = useState<boolean>(true);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
+  // const [isEditing, setIsEditing] = useState<boolean>(false);
 
   useEffect(() => {
     (
@@ -59,6 +62,7 @@ export const EditProduct = () => {
         setValue("preco", Number(produto.preco));
         setValue("categoria", produto.categoria as 'Pães' | 'Doces' | 'Salgados');
         setValue("descricao", produto.descricao);
+        setValue("qtd_em_estoque", Number(produto.qtd_em_estoque));
 
         setProductResponse(produto);
         setPrice(
@@ -150,6 +154,22 @@ export const EditProduct = () => {
               }
             />
             <InputField
+              label='Estoque'
+              error={errors.qtd_em_estoque}
+              loading={componentsLoading}
+              input={
+                <input
+                  type="number"
+                  defaultValue={productResponse.qtd_em_estoque}
+                  {...register('qtd_em_estoque')}
+                  onChangeCapture={handleQuantityChange}
+                  placeholder='Digite a quantidade em estoque'
+                  className='outline-none w-full disabled:text-gray-600 disabled:cursor-not-allowed'
+                  disabled={isEditing ? false : true}
+                />
+              }
+            />
+            <InputField
               label='Categoria'
               error={errors.categoria}
               loading={componentsLoading}
@@ -187,9 +207,7 @@ export const EditProduct = () => {
             />
           </div>
           <div className='flex flex-col items-center gap-4 sticky bottom-0 z-40 bg-vanilla border border-black pt-4 rounded-t-[2rem] bg-none w-full'>
-            <Button type={isEditing ? 'button' : 'submit'}
-              onClick={() => setIsEditing(!isEditing)}
-            >
+            <Button type='submit'>
               {isEditing ? 'Salvar Alterações' : 'Editar Produto'}
             </Button>
             {isEditing && (
