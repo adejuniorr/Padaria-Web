@@ -5,12 +5,12 @@ Bem-vindo(a) à **Padaria Web**, uma aplicação **Fullstack** desenvolvida para
 ## Índice
 
 1. [Frontend](#frontend)  
-   1.1 [📱 Responsividade](#responsividade)  
-   1.2 [📋 Formulários e Validações](#formulários-e-validações)  
+   1.1 [📱 Responsividade](#-responsividade)  
+   1.2 [📋 Formulários e Validações](#-formulários-e-validações)  
 2. [Backend](#backend)  
-   2.1 [⚙️ API](#api)  
-   2.2 [💾 Banco de Dados](#banco-de-dados)  
-3. [🚀 Executando a aplicação localmente](#executando-a-aplicação-localmente)  
+   2.1 [⚙️ API](#%EF%B8%8F-api)  
+   2.2 [💾 Banco de Dados](#-banco-de-dados)  
+3. [🚀 Executando a aplicação localmente](#-executando-a-aplicação-localmente)  
 
 ---
 
