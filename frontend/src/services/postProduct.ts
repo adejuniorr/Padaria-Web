@@ -15,7 +15,7 @@ export const postProduct = async (formData: FormData) => {
     }
   );
 
-  if (response.data.success) return;
+  if (response.data.success) return response.data.success;
 
   const error: ResponseError = new Error("Erro ao editar produto");
   error.status = response.status;

@@ -132,10 +132,11 @@ export const CreateProduct = () => {
                   <input
                     type="number"
                     placeholder='Digite a quantidade em estoque'
-                    {...register('qtd_em_estoque')}
                     onChangeCapture={handleQuantityChange}
+                    {...register('qtd_em_estoque')}
                     className='outline-none w-full'
                     defaultValue={0}
+                    min={0}
                   />
                 }
               />

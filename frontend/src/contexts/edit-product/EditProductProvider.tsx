@@ -52,7 +52,7 @@ export const EditProductProvider = ({ children }: { children: ReactNode }) => {
         setOpenError(true);
       }, 1000);
       
-      setIsEditing(false);
+      // setIsEditing(false);
 
       if ((error as ResponseError).status === 409) {
         setErrorMessage("Já existe um produto cadastrado com este nome");

@@ -28,13 +28,13 @@ export const CreateProductProvider = ({ children }: { children: ReactNode }) => 
     }
 
     try {
-      postProduct(formData);
+      await postProduct(formData);
 
       setTimeout(() => {
         setOpenAlert(true);
       }, 2000);
       
-    } catch (error: unknown) {
+    } catch (error: ResponseError | unknown) {
       setTimeout(() => {
         setOpenError(true);
       }, 2000);
