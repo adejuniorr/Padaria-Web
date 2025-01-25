@@ -50,7 +50,7 @@ export const productSchema = z.object({
         z
           .number()
           .int()
-          .positive(),
+          .min(0, 'A quantidade em estoque deve ser maior ou igual a zero'),
         z
           .string()
           .min(1, 'A quantidade em estoque deve ser informada')

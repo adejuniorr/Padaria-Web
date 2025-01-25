@@ -41,17 +41,17 @@ export const EditProductProvider = ({ children }: { children: ReactNode }) => {
       await updateProduct(id, formData);
 
       setIsEditing(false);
-      
+
       setTimeout(() => {
         setOpenAlert(true);
       }, 1000);
-      
+
     } catch (error: unknown) {
-      
+
       setTimeout(() => {
         setOpenError(true);
       }, 1000);
-      
+
       // setIsEditing(false);
 
       if ((error as ResponseError).status === 409) {

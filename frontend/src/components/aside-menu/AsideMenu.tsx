@@ -4,7 +4,8 @@ import { Link, useLocation } from "react-router-dom"
 import { FaXmark } from "react-icons/fa6"
 import { PiHouseBold } from "react-icons/pi";
 import { MdOutlineMenuOpen } from "react-icons/md"
-import { FaArrowRight, FaPlus } from "react-icons/fa"
+import { FaPlus } from "react-icons/fa"
+import { TbReport } from "react-icons/tb";
 
 export const AsideMenu = () => {
   const location = useLocation();
@@ -29,14 +30,14 @@ export const AsideMenu = () => {
                 <PiHouseBold className="text-xl" /> Estoque
               </Link>
             </li>
+            <li className={`${isAtPath("/relatorio") ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full hover:bg-orange hover:text-white`}>
+              <Link to="/relatorio" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3 rounded-full focus:outline-black">
+                <TbReport className="text-lg" /> Gerar Relatório de Vendas
+              </Link>
+            </li>
             <li className={`${isAtPath("/novo") ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full hover:bg-orange hover:text-white`}>
               <Link to="/novo" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3 rounded-full focus:outline-black">
                 <FaPlus className="text-lg" /> Cadastrar Novo Produto
-              </Link>
-            </li>
-            <li className={`${isAtPath("/relatorio") ? "bg-orange text-white" : "bg-white text-brown"} w-full border-[3px] border-white rounded-full hover:bg-orange hover:text-white`}>
-              <Link to="/relatorio" onClick={toggleMenu} className="flex items-center gap-4 font-bold p-3 rounded-full focus:outline-black">
-                <FaArrowRight className="text-lg" /> Gerar Relatório de Vendas
               </Link>
             </li>
           </ul>
