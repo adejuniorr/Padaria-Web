@@ -1,9 +1,9 @@
 import { PieChart, Pie, Cell, Tooltip } from 'recharts';
-import { ProductLineChartProps } from '../../types/types';
+import { ProductChartProps } from '../../types/types';
 
 const COLORS = ['#F89226', '#F9AB57', '#FBC489', '#FDDCBA'];
 
-export const ProductPieChart = ({ productChartData }: ProductLineChartProps) => {
+export const ProductPieChart = ({ productChartData }: ProductChartProps) => {
   return (
     <>
       <PieChart width={300} height={300}>

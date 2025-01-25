@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import { ProductLineChartProps } from '../../types/types';
+import { ProductChartProps } from '../../types/types';
 
-export const ProductLineChart = ({ productChartData }: ProductLineChartProps) => {
+export const ProductLineChart = ({ productChartData }: ProductChartProps) => {
   return (
     <LineChart
       width={540}

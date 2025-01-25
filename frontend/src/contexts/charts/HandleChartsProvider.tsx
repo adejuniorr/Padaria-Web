@@ -1,10 +1,58 @@
 import { ReactNode, useEffect, useState } from "react";
 import { HandleChartsContext } from "./HandleChartsContext";
 import { getFourBestSellers } from "../../services/getFourBestSellers";
-import { ProductChartData } from "../../types/types";
+import { ProductChartData, ProductResponse } from "../../types/types";
 import { addDays } from "date-fns";
+import { getAllProducts } from "../../services/getAllProducts";
 
 export const HandleChartsProvider = ({ children }: { children: ReactNode }) => {
+  // Line Chart:
+  const [loadingSearchDropdown, setLoadingSearchDropdown] = useState<boolean>(false);
+  const [openSearchDropdown, setOpenSearchDropdown] = useState<boolean>(false);
+  const [loadingChartData, setLoadingChartData] = useState<boolean>(false);
+  const [productsFound, setProductsFound] = useState<ProductResponse[]>([]);
+  const [selectedProductName, setSelectedProductName] = useState<string>('');
+  const [selectedProductData, setselectedProductData] = useState<ProductChartData[] | null>([
+    { qtd_vendida: 0, mes: 'Jul' },
+    { qtd_vendida: 0, mes: 'Ago' },
+    { qtd_vendida: 0, mes: 'Set' },
+    { qtd_vendida: 0, mes: 'Out' },
+    { qtd_vendida: 0, mes: 'Nov' },
+    { qtd_vendida: 0, mes: 'Dez' },
+  ]);
+
+  const handleCreateLineChart = async (search: string) => {
+    if (search.length < 3) {
+      setOpenSearchDropdown(false);
+
+      setProductsFound([]);
+
+      setSelectedProductName('');
+
+      setselectedProductData([
+        { qtd_vendida: 0, mes: 'Jul' },
+        { qtd_vendida: 0, mes: 'Ago' },
+        { qtd_vendida: 0, mes: 'Set' },
+        { qtd_vendida: 0, mes: 'Out' },
+        { qtd_vendida: 0, mes: 'Nov' },
+        { qtd_vendida: 0, mes: 'Dez' },
+      ]);
+
+      return;
+    }
+
+    setLoadingSearchDropdown(true);
+
+    setOpenSearchDropdown(true);
+
+    const products = await getAllProducts();
+
+    setProductsFound(products.filter((product) => product.nome.toLowerCase().includes(search.toLowerCase())));
+
+    setLoadingSearchDropdown(false);
+  }
+
+  // Pie Chart:
   const [openDateRange, setOpenDateRange] = useState<boolean>(false);
   const [dateRange, setDateRange] = useState([{
     startDate: addDays(new Date(), -6),
@@ -47,6 +95,17 @@ export const HandleChartsProvider = ({ children }: { children: ReactNode }) => {
   return (
     <HandleChartsContext.Provider
       value={{
+        loadingSearchDropdown,
+        openSearchDropdown,
+        setOpenSearchDropdown,
+        loadingChartData,
+        setLoadingChartData,
+        productsFound,
+        selectedProductName,
+        setSelectedProductName,
+        handleCreateLineChart,
+        selectedProductData,
+        setselectedProductData,
         dateRange,
         handleRangeChange,
         handleCreatePieChart,

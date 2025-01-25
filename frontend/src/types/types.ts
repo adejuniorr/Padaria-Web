@@ -29,7 +29,7 @@ export type ProductChartData = {
   name?: string;
 }
 
-export type ProductLineChartProps = {
+export type ProductChartProps = {
   productChartData: ProductChartData[];
 }
 
