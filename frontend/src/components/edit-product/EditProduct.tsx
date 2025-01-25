@@ -166,6 +166,7 @@ export const EditProduct = () => {
                   placeholder='Digite a quantidade em estoque'
                   className='outline-none w-full disabled:text-gray-600 disabled:cursor-not-allowed'
                   disabled={isEditing ? false : true}
+                  min={0}
                 />
               }
             />

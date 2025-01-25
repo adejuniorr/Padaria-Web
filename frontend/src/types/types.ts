@@ -23,6 +23,22 @@ export type ProductResponse = {
   qtd_em_estoque: number;
 }
 
+export type ProductChartData = {
+  qtd_vendida: number;
+  mes?: string;
+  name?: string;
+}
+
+export type ProductChartProps = {
+  productChartData: ProductChartData[];
+}
+
+export type DateRangeObject = {
+  startDate: Date;
+  endDate: Date;
+  key: string;
+}
+
 export interface ResponseError extends Error {
   status?: number;
 }

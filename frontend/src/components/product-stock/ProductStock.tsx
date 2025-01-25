@@ -18,7 +18,9 @@ export const ProductStock = () =>  {
       <h2 className='font-pacifico text-orange text-center py-4 h-[13%]'>
         Estoque
       </h2>
-      <SearchInput handleSearch={handleSearch} />
+      <div className="max-w-[600px] mx-auto mb-6">
+        <SearchInput handleSearch={handleSearch} />
+      </div>
       <CategorySelector
         categories={categories}
         selectedCategory={selectedCategory}

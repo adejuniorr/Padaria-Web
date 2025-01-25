@@ -21,7 +21,7 @@ export const ProductCard = ({ product, categories, creating, editing, showQuanti
       <div className='relative w-[50%] sm:w-[40%] flex items-center justify-center bg-orange bg-opacity-80 rounded-l-md overflow-hidden'>
         <div className="flex items-center justify-center">
           {creating ? (
-            <ImageUploader onImageChange={onImageChange!} pageLoad={pageLoad} />
+            <ImageUploader onImageChange={onImageChange!} pageLoad={pageLoad} productInitial={product.nome[0]} />
           ) : (
             editing ? (
               <ImageUploader onImageChange={onImageChange!} prevImg={prevImg} />
