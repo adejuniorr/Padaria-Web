@@ -45,23 +45,11 @@ export const CreateProduct = () => {
   } = useContext(CreateProductContext);
 
   const categories = [
-    {
-      name: 'Todos',
-      icon: <TiThSmallOutline />,
-    },
-    {
-      name: 'Pães',
-      icon: <PiBreadFill />,
-    },
-    {
-      name: 'Doces',
-      icon: <RiCake3Line />,
-    },
-    {
-      name: 'Salgados',
-      icon: <MdOutlineBakeryDining />,
-    },
-  ]
+    { name: 'Todos', icon: <TiThSmallOutline /> },
+    { name: 'Pães', icon: <PiBreadFill /> },
+    { name: 'Doces', icon: <RiCake3Line /> },
+    { name: 'Salgados', icon: <MdOutlineBakeryDining /> },
+  ];
 
   const [dots, setDots] = useState(""); // Estado para os pontos
 

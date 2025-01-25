@@ -5,12 +5,14 @@ type ImageUploaderProps = {
   onImageChange: (file: File | null) => void;
   prevImg?: string;
   pageLoad?: boolean;
+  productInitial?: string;
 }
 
 export const ImageUploader = ({
   onImageChange,
   prevImg,
-  pageLoad
+  pageLoad,
+  productInitial
 }: ImageUploaderProps) => {
   const [imgURL, setImgURL] = useState<string>("");
   const [prevImgURL, setPrevImgURL] = useState<string>(prevImg!);
@@ -53,7 +55,7 @@ export const ImageUploader = ({
           )}
         </>
       )}
-      <div className={`${imgURL || prevImgURL ? "hidden" : "block"} absolute top-0 left-0 bg-gray-300 text-gray-600 flex flex-col items-center justify-center w-full h-full p-4`}>
+      <div className={`${imgURL || prevImgURL || pageLoad ? "hidden" : "block"} absolute top-0 left-0 bg-gray-300 text-gray-600 flex flex-col items-center justify-center w-full h-full p-4`}>
         <label htmlFor="image-input" className="flex flex-col items-center text-center gap-2 border-2 border-dashed border-gray-700 rounded-md py-2 px-1 cursor-pointer">
           <FaPlus className="text-4xl" />
           <span>Adicionar Imagem</span>
@@ -66,6 +68,9 @@ export const ImageUploader = ({
           />
         </label>
       </div>
+      {pageLoad && (
+        <p className="text-4xl text-brown font-bold">{productInitial}</p>
+      )}
     </div>
   );
 };
