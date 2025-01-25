@@ -11,6 +11,8 @@ import { CreateProduct } from './components/create-product/CreateProduct'
 import { SharedContextProvider } from './contexts/shared-context/SharedContextProvider'
 import { CreateProductProvider } from './contexts/create-product/CreateProductProvider'
 import { EditProductProvider } from './contexts/edit-product/EditProductProvider'
+import { ProductReports } from './components/product-reports/ProductReports'
+import { HandleChartsProvider } from './contexts/charts/HandleChartsProvider'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -26,6 +28,14 @@ createRoot(document.getElementById('root')!).render(
                   <EditProduct />
                 </EditProductProvider>
               </SharedContextProvider>
+            }
+          />
+          <Route
+            path='/relatorio'
+            element={
+              <HandleChartsProvider>
+                <ProductReports />
+              </HandleChartsProvider>
             }
           />
         </Route>
